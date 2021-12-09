@@ -213,9 +213,7 @@ public class InicioSesion extends javax.swing.JFrame {
                     pst.setTimestamp(1, Timestamp.valueOf(fecha));
                     pst.setInt(2, rs.getInt("idtipousuario"));
                     pst.execute();
-                    System.out.println("ultimo inicio enviado");
                     int tipoUsuario = rs.getInt("idtipousuario");
-                    System.out.println(tipoUsuario);
                     if (tipoUsuario == 1) {
                         JOptionPane.showMessageDialog(null, "Bienvenido Al Sistema " + user);
                         dispose();

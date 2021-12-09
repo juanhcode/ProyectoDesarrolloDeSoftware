@@ -16,7 +16,6 @@ public class Conexion {
         try {
             Class.forName("org.postgresql.Driver");
             con = DriverManager.getConnection(cadena, usuario, clave);
-            System.out.println("Te has conectado");
         } catch (Exception e) {
             System.out.println("Conexion fallida");
         }

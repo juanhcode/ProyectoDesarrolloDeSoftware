@@ -5,11 +5,11 @@
  */
 package Modelo;
 
-import static Modelo.Conexion.getConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,25 +23,27 @@ public class SqlUsuarios extends Conexion {
     String pass = "";
     //Registrar Usuarios
 
-    public boolean registrar(usuarios usr) {
+    public boolean registrar(usuarios usr,String fecha) {
 
-        PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement pst = null; //ps= sentencia preparada;
 
         //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO usuarios (id_Usuario, usuario, contraseña, nombre, correo, Tipo_Usuario_id_tipo) VALUES(?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO usuario (codigo,nombre, contraseña,idtipousuario,usuario_nickname,correo_electronico,last_session)"
+                + " VALUES(?,?,?,?,?,?,?)";
         try {
-
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, usr.getId());
-            ps.setString(2, usr.getUsuario());
-            ps.setString(3, usr.getPassword());
-            ps.setString(4, usr.getNombre());
-            ps.setString(5, usr.getCorreo());
-            ps.setInt(6, usr.getId_tipo());
-            ps.execute();
-
+            pst = conexion.conectar().prepareStatement(sql);
+            pst.setInt(1, usr.getId());
+            pst.setString(2, usr.getNombre());
+            pst.setString(3, usr.getPassword());
+            pst.setInt(4, usr.getId_tipo());
+            pst.setString(5, usr.getUsuario());
+            pst.setString(6, usr.getCorreo());
+            pst.setTimestamp(7,Timestamp.valueOf(fecha));
+            pst.execute();
+            pst.close();
             return true;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -53,18 +55,20 @@ public class SqlUsuarios extends Conexion {
     //Validar si un usuario ya existe
     public int existeUsuario(String Usuario) {
 
-        PreparedStatement ps = null; //ps= sentencia preparada;
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        conexion.conectar();
         ResultSet rs = null;
-        Connection con = getConexion();
+        PreparedStatement pst = null; //ps= sentencia preparada;
 
         //cuenta el numero de registros que tiene la tabla cuando usuario
-        //sea igual al campo que agergamos
-        String sql = "SELECT count(id_Usuario) FROM usuarios WHERE usuario = ?";
+        //sea igual al campo que agregamos
+        String sql = "SELECT count(codigo) FROM usuario WHERE usuario_nickname = ?";
         try {
 
-            ps = con.prepareStatement(sql);
-            ps.setString(1, Usuario);
-            rs = ps.executeQuery();
+            pst = conexion.conectar().prepareStatement(sql);
+            pst.setString(1, Usuario);
+            rs = pst.executeQuery();
 
             if (rs.next()) {
                 return rs.getInt(1);

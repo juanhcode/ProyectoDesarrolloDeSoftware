@@ -20,8 +20,6 @@ public class usuarios {
     private int id_tipo;
     private String nombre_tipo;
     
-    
-    
     public int getId() {
         return id;
     }
