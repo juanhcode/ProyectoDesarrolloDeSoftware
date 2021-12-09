@@ -13,7 +13,6 @@ public class padres {
 
     private int id;
     private String nombres;
-    private String aprellidos;
     private String direccion;
     private int telefonos;
     private String parentesco;
@@ -33,14 +32,6 @@ public class padres {
 
     public void setNombres(String nombres) {
         this.nombres = nombres;
-    }
-
-    public String getAprellidos() {
-        return aprellidos;
-    }
-
-    public void setAprellidos(String aprellidos) {
-        this.aprellidos = aprellidos;
     }
 
     public String getDireccion() {

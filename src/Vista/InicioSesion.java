@@ -207,7 +207,7 @@ public class InicioSesion extends javax.swing.JFrame {
                         "SELECT idtipousuario FROM usuario WHERE usuario_nickname = '" + user
                         + "' AND contraseña = '" + pass + "'");
                 rs = pst.executeQuery();
-                String sql = "UPDATE usuario SET last_session = (?) WHERE idTipoUsuario=?";
+                String sql = "UPDATE usuario SET last_session = (?) WHERE idtipousuario=?";
                 if (rs.next()) {
                     pst = conexion.conectar().prepareStatement(sql);
                     pst.setTimestamp(1, Timestamp.valueOf(fecha));
