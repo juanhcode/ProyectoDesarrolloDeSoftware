@@ -22,8 +22,8 @@ public class SqlRegistrarNiños extends Conexion {
         PreparedStatement pst = null; //ps= sentencia preparada;
         
         //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO niños (num_matricula,nombre,numregistrocivil,"
-                + "tpsangre,sexo,fecha_nacimiento,fecha_ingreso,grado) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO niños (nombre,numregistrocivil,"
+                + "tpsangre,sexo,fecha_nacimiento,fecha_ingreso,grado) VALUES(?,?,?,?,?,?,?)";
         
         String sql2 = "INSERT INTO se_relaciona (codigo_responsable,num_matricula_niño) VALUES(?,?)";
         java.sql.Date dateSql= new java.sql.Date(Niño.getFechaNacimiento().getYear(),
@@ -36,14 +36,13 @@ public class SqlRegistrarNiños extends Conexion {
             
             //SQL1
             pst = conexion.conectar().prepareStatement(sql);
-            pst.setInt(1, Niño.getMatricula());
-            pst.setString(2, Niño.getNombres());
-            pst.setInt(3, Niño.getRegistroCivil());
-            pst.setString(4, Niño.getTipoDeSangre());
-            pst.setString(5, Niño.getSexo());
-            pst.setDate(6, dateSql);
-            pst.setDate(7, dateSql2);
-            pst.setInt(8, Integer.parseInt(Niño.getGrado()));
+            pst.setString(1, Niño.getNombres());
+            pst.setInt(2, Niño.getRegistroCivil());
+            pst.setString(3, Niño.getTipoDeSangre());
+            pst.setString(4, Niño.getSexo());
+            pst.setDate(5, dateSql);
+            pst.setDate(6, dateSql2);
+            pst.setInt(7, Integer.parseInt(Niño.getGrado()));
             pst.execute();
             
             //SQL3
@@ -77,7 +76,6 @@ public class SqlRegistrarNiños extends Conexion {
         //sea igual al campo que agergamos
         String sql = "SELECT count(num_matricula) FROM niños WHERE numregistrocivil = ?";
         try {
-
             pst = conexion.conectar().prepareStatement(sql);
             pst.setInt(1, Integer.parseInt(Niño));
             rs = pst.executeQuery();
