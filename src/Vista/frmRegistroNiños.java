@@ -6,7 +6,6 @@
 package Vista;
 
 import Modelo.Conexion;
-import static Modelo.Conexion.getConexion;
 import Modelo.Responsables;
 import Modelo.SqlGestionarResponsables;
 import Modelo.SqlRegistrarNiños;
@@ -19,6 +18,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -69,11 +73,9 @@ public class frmRegistroNiños extends javax.swing.JFrame {
 
         jButton3 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         Registrar = new javax.swing.JButton();
         campoNombres = new javax.swing.JTextField();
-        campoApellidos = new javax.swing.JTextField();
         campoFecha = new javax.swing.JTextField();
         campoFechaIngreso = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -94,8 +96,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         Modificar = new javax.swing.JButton();
         Consultar1 = new javax.swing.JButton();
         consultaN = new javax.swing.JTextField();
-        docDocente = new javax.swing.JTextField();
-        jLabel11 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -114,9 +114,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel2.setText("Nombres:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel3.setText("Apellidos:");
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel4.setText("Sexo:");
 
@@ -128,14 +125,8 @@ public class frmRegistroNiños extends javax.swing.JFrame {
             }
         });
 
-        campoApellidos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoApellidosActionPerformed(evt);
-            }
-        });
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel6.setText("Documento:");
+        jLabel6.setText("Registro civil");
 
         campoSexo.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         campoSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "M", "F" }));
@@ -162,7 +153,12 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         TipoSangre.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+" }));
 
         CampoGrado.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        CampoGrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pre-Jardín", "Jardín", "Transición " }));
+        CampoGrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Iniciación","Párvulos","Prejardín","Jardín","Transición"}));
+        CampoGrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CampoGradoActionPerformed(evt);
+            }
+        });
 
         Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -233,9 +229,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
             }
         });
 
-        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel11.setText("<html>DOC Docente Encargado:</html>");
-
         jMenu3.setText("Archivo");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
@@ -265,14 +258,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel6)
-                                            .addComponent(jLabel2))
-                                        .addGap(79, 79, 79)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(campoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(campoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel1)
                                             .addComponent(jLabel5))
                                         .addGap(31, 31, 31)
@@ -281,19 +266,20 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                                             .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel2)
                                             .addComponent(jLabel4))
-                                        .addGap(89, 89, 89)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(campoApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                            .addComponent(campoSexo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addGap(79, 79, 79)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(campoSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(campoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(campoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(50, 50, 50)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel7)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(28, 28, 28))
+                                    .addComponent(jLabel10))
+                                .addGap(43, 43, 43))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(258, 258, 258)
                                 .addComponent(jLabel9)))
@@ -304,7 +290,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(docDocente)
                                     .addComponent(campoResponsable)
                                     .addComponent(TipoSangre, 0, 91, Short.MAX_VALUE)))))
                     .addGroup(layout.createSequentialGroup()
@@ -340,20 +325,16 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                                     .addComponent(campoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(campoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(32, 32, 32)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(campoSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(campoSexo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel10)
                                     .addComponent(TipoSangre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel1)
-                                    .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(docDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel6)
@@ -367,11 +348,11 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(31, 31, 31)
                                         .addComponent(campoResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(20, 20, 20)
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addComponent(campoFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                         .addComponent(consultaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -383,7 +364,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
@@ -395,47 +376,52 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void campoApellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoApellidosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoApellidosActionPerformed
-
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
         SqlRegistrarNiños modSql = new SqlRegistrarNiños();
         niños mod = new niños();
 
         //Valida que ningun campo esté vacio
-        if (campoDocumento.getText().equals("") ||campoNombres.getText().equals("") || campoApellidos.getText().equals("")
-                ||campoSexo.getSelectedItem().toString().equals("") || campoFecha.getText().equals("")
+        if (campoDocumento.getText().equals("") ||campoNombres.getText().equals("") || campoSexo.getSelectedItem().toString().equals("") || campoFecha.getText().equals("")
                 || campoFechaIngreso.getText().equals("") || CampoGrado.getSelectedItem().toString().equals("") || 
                 campoResponsable.getText().equals("")||
-                TipoSangre.getSelectedItem().toString().equals("")||
-                docDocente.getText().equals("")){
+                TipoSangre.getSelectedItem().toString().equals("")||  campoFecha.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
-
             if (modSql.existeNiño(campoDocumento.getText()) == 0) //usuario no existe
             {
                 
                     int ConvertirDocumentoNiño = Integer.parseInt(campoDocumento.getText());
-                    mod.setId(ConvertirDocumentoNiño);
-
+                    mod.setRegistroCivil(ConvertirDocumentoNiño);
                     mod.setNombres(campoNombres.getText());
-                    mod.setAprellidos(campoApellidos.getText());
                     mod.setSexo(campoSexo.getSelectedItem().toString());
-                    mod.setFechaNacimiento(campoFecha.getText());
-                    mod.setFechaIngreso(campoFechaIngreso.getText());
-                    mod.setGrado(CampoGrado.getSelectedItem().toString());
-                    
+                try {  
+                    Date date1=new SimpleDateFormat("yyyy/MM/dd").parse(campoFecha.getText());
+                    Date date2=new SimpleDateFormat("yyyy/MM/dd").parse(campoFechaIngreso.getText());
+                    mod.setFechaNacimiento(date1);
+                    mod.setFechaIngreso(date2); 
+                } catch (ParseException ex) {
+                    Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
+                }                 
+                    if(CampoGrado.getSelectedItem().toString().equals("Iniciación")){
+                        System.out.println("1");
+                        mod.setGrado(1+"");
+                    }else if(CampoGrado.getSelectedItem().toString().equals("Párvulos")){
+                        System.out.println("2");
+                        mod.setGrado(2+"");
+                    }else if(CampoGrado.getSelectedItem().toString().equals("Prejardín")){
+                        System.out.println("3");
+                        mod.setGrado(3+"");
+                    }else if(CampoGrado.getSelectedItem().toString().equals("Jardín")){
+                        System.out.println("4");
+                        mod.setGrado(4+"");
+                    }else if(CampoGrado.getSelectedItem().toString().equals("Transición")){
+                        System.out.println("5");
+                        mod.setGrado(5+"");
+                    }
                     int ConvertirIDPadre = Integer.parseInt(campoResponsable.getText());
-                    mod.setIdResponsable(ConvertirIDPadre);
-                    
-                    mod.setTipoDeSangre(TipoSangre.getSelectedItem().toString());
-                    
-                    
-                    int ConvertirIDDocente = Integer.parseInt(docDocente.getText());
-                    mod.setIdDocente(ConvertirIDDocente);
-
-                    if (modSql.registrar(mod)) {
+                    mod.setIdResponsable(ConvertirIDPadre);                
+                    mod.setTipoDeSangre(TipoSangre.getSelectedItem().toString());                 
+                    if (modSql.registrar(mod,mod.getRegistroCivil())) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
                         // Limpiar();
                     } else {
@@ -453,36 +439,25 @@ public class frmRegistroNiños extends javax.swing.JFrame {
     private void TablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaMouseClicked
         PreparedStatement ps = null;
         ResultSet rs = null;
-
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreA = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
 
-            ps = conn.prepareStatement("SELECT idAlumno, NombresAlumno, ApellidosAlumno, SexoAlumno, "
-                    + "FechaDeNacimiento, FechaDeIngreso, Grado, TipoDeSangre, "
-                    + "Responsable_idResponsable, IDDocente_Asignado  FROM alumno WHERE idAlumno=?");
-            ps.setString(1, nombreA);
+            ps = Obconn.conectar().prepareStatement("SELECT nombre,numregistrocivil,fecha_nacimiento,fecha_ingreso,"
+                    + "grado,tpsangre,sexo FROM niños WHERE num_matricula=?");
+            ps.setInt(1, Integer.parseInt(nombreA));
             rs = ps.executeQuery();
-
             while (rs.next()) {
-      
-                campoDocumento.setText(rs.getString("idAlumno"));
-                campoNombres.setText(rs.getString("NombresAlumno"));
-                campoApellidos.setText(rs.getString("ApellidosAlumno"));
-                campoSexo.setSelectedItem(rs.getString("SexoAlumno"));
-                campoFecha.setText(rs.getString("FechaDeNacimiento"));
-                campoFechaIngreso.setText(rs.getString("FechaDeIngreso"));
-                CampoGrado.setSelectedItem(rs.getString("Grado"));
-                TipoSangre.setSelectedItem(rs.getString("TipoDeSangre"));
-                campoResponsable.setText(rs.getString("Responsable_idResponsable"));
-                docDocente.setText(rs.getString("IDDocente_Asignado"));
-                
-                
-          
-               
+                campoDocumento.setText(rs.getInt("numregistrocivil")+ "");
+                campoNombres.setText(rs.getString("nombre"));
+                campoSexo.setSelectedItem(rs.getString("sexo"));
+               // campoFecha.setText(rs.getDate("fecha_nacimiento"));
+                //campoFechaIngreso.setText(rs.getDate("fecha_ingreso"));
+                //CampoGrado.setSelectedItem(rs.getInt("grado"));
+                TipoSangre.setSelectedItem(rs.getString("tpsangre"));
+                //campoResponsable.setText(rs.getString("Responsable_idResponsable"));           
             }
         } catch (SQLException ex) {
             System.err.println(ex.toString());
@@ -494,12 +469,12 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         try {
 
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            //Connection conn = Obconn.getConexion();
 
             int Fila = Tabla.getSelectedRow();
             String id = Tabla.getValueAt(Fila, 0).toString();
 
-            ps = conn.prepareStatement("DELETE FROM alumno WHERE idAlumno=?");
+            //ps = conn.prepareStatement("DELETE FROM alumno WHERE idAlumno=?");
             ps.setString(1, id);
             ps.execute();
 
@@ -519,15 +494,13 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         PreparedStatement ps = null;
 
         try {
-
-            con = getConexion();
-
+            //con = getConexion();
             ps = con.prepareStatement("UPDATE alumno SET  NombresAlumno=?, ApellidosAlumno=?, SexoAlumno=?, FechaDeNacimiento=?, FechaDeIngreso=?,"
                     + "Grado=?, TipoDeSangre=?, Responsable_idResponsable=?, IDDocente_Asignado=? WHERE idAlumno=?");
                     
 
             ps.setString(1, campoNombres.getText());
-            ps.setString(2, campoApellidos.getText());
+            //ps.setString(2, campoApellidos.getText());
             ps.setString(3, campoSexo.getSelectedItem().toString());
             ps.setString(4, campoFecha.getText());
             ps.setString(5, campoFechaIngreso.getText());
@@ -537,8 +510,8 @@ public class frmRegistroNiños extends javax.swing.JFrame {
             int  DocumentoR= Integer.parseInt(campoResponsable.getText());
             ps.setInt(8, DocumentoR);
             
-            int  DocumentoD= Integer.parseInt(docDocente.getText());
-            ps.setInt(9, DocumentoD);
+            //int  DocumentoD= Integer.parseInt(docDocente.getText());
+            //ps.setInt(9, DocumentoD);
 
             int CampoID = Integer.parseInt(campoDocumento.getText());
             ps.setInt(10, CampoID);
@@ -562,8 +535,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         String consultaNiño = consultaN.getText();
         String where = "";
         if (!"".equals((consultaNiño))) {
-           where = "WHERE idAlumno = '" + consultaNiño + "'";
-
+           where = " WHERE num_matricula = '" + consultaNiño + "'";
         }
         try {
             DefaultTableModel modelo = new DefaultTableModel();
@@ -572,32 +544,27 @@ public class frmRegistroNiños extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
 
-            String sql = "SELECT idAlumno, NombresAlumno, ApellidosAlumno, SexoAlumno, FechaDeNacimiento,"
-                    + "FechaDeIngreso, Grado, TipoDeSangre, Responsable_idResponsable, IDDocente_Asignado  FROM alumno " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
+            String sql = "SELECT num_matricula,nombre,numregistrocivil,fecha_nacimiento,fecha_ingreso,"
+                    + "grado,tpsangre,sexo FROM niños" // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
                     +where;
             System.out.println(sql);
-            ps = con.prepareStatement(sql);
+            ps = conn.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
-            modelo.addColumn("DOC Niño");
-            modelo.addColumn("Nombres");
-            modelo.addColumn("Apellidos");
-            modelo.addColumn("Sexo");
-            modelo.addColumn("Fecha De Nacimiento");
-            modelo.addColumn("Fecha De Ingreso");
+            modelo.addColumn("Matricula");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Registro Civil");
+            modelo.addColumn("fecha nacimiento");
+            modelo.addColumn("Fecha Ingreso");
             modelo.addColumn("Grado");
             modelo.addColumn("Tipo De Sangre");
-            modelo.addColumn("DOC Responsable");
-            modelo.addColumn("DOC Docente");
             //Condicion para los anchos de la tableta xd
             int[] anchos = {80, 60, 60, 45, 100, 100, 50, 50, 120, 120};
             for (int i = 0; i < Tabla.getColumnCount(); i++) {
                 Tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
-
             while (rs.next()) {
                 Object[] filas = new Object[cantidadColumnas];
                 for (int i = 0; i < cantidadColumnas; i++) {
@@ -605,7 +572,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                 }
                 modelo.addRow(filas);
             }
-
         } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
@@ -618,17 +584,20 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void CampoGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoGradoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CampoGradoActionPerformed
      private void Limpiar() {
         campoDocumento.setText("");
         campoNombres.setText("");
-        campoApellidos.setText("");
+        //campoApellidos.setText("");
         campoSexo.setSelectedItem("");
         campoFecha.setText("");
         campoFechaIngreso.setText("");
         CampoGrado.setSelectedItem("");
         TipoSangre.setSelectedItem("");
         campoResponsable.setText("");
-        docDocente.setText("");
       
     }
     /**
@@ -675,7 +644,6 @@ public class frmRegistroNiños extends javax.swing.JFrame {
     private javax.swing.JButton Registrar;
     private javax.swing.JTable Tabla;
     private javax.swing.JComboBox<String> TipoSangre;
-    private javax.swing.JTextField campoApellidos;
     private javax.swing.JTextField campoDocumento;
     private javax.swing.JTextField campoFecha;
     private javax.swing.JTextField campoFechaIngreso;
@@ -683,13 +651,10 @@ public class frmRegistroNiños extends javax.swing.JFrame {
     private javax.swing.JTextField campoResponsable;
     private javax.swing.JComboBox<String> campoSexo;
     private javax.swing.JTextField consultaN;
-    private javax.swing.JTextField docDocente;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

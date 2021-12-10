@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package Modelo;
-
-import static Modelo.Conexion.getConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,31 +15,48 @@ import java.sql.SQLException;
  */
 public class SqlRegistrarNiños extends Conexion {
 
-    public boolean registrar(niños Niño) {
-
-        PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
-
+    public boolean registrar(niños Niño,int registroCivil) {    
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement pst = null; //ps= sentencia preparada;
+        
         //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO alumno (idAlumno, NombresAlumno, ApellidosAlumno, SexoAlumno,"
-                + "FechaDeNacimiento, FechaDeIngreso, Grado, TipoDeSangre, Responsable_idResponsable, IDDocente_Asignado) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO niños (num_matricula,nombre,numregistrocivil,"
+                + "tpsangre,sexo,fecha_nacimiento,fecha_ingreso,grado) VALUES(?,?,?,?,?,?,?,?)";
+        
+        String sql2 = "INSERT INTO se_relaciona (codigo_responsable,num_matricula_niño) VALUES(?,?)";
+        java.sql.Date dateSql= new java.sql.Date(Niño.getFechaNacimiento().getYear(),
+                Niño.getFechaNacimiento().getMonth(),Niño.getFechaNacimiento().getDay());
 
+        java.sql.Date dateSql2= new java.sql.Date(Niño.getFechaIngreso().getYear(),
+                Niño.getFechaIngreso().getMonth(),Niño.getFechaIngreso().getDay());
+        int matricula;
         try {
-
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, Niño.getId());
-            ps.setString(2, Niño.getNombres());
-            ps.setString(3, Niño.getAprellidos());
-            ps.setString(4, Niño.getSexo());
-            ps.setString(5, Niño.getFechaNacimiento());
-            ps.setString(6, Niño.getFechaIngreso());
-            ps.setString(7, Niño.getGrado());
-            ps.setString(8, Niño.getTipoDeSangre());
-            ps.setInt(9, Niño.getIdResponsable());
-            ps.setInt(10, Niño.getIdDocente());
-
-            ps.execute();
-
+            
+            //SQL1
+            pst = conexion.conectar().prepareStatement(sql);
+            pst.setInt(1, Niño.getMatricula());
+            pst.setString(2, Niño.getNombres());
+            pst.setInt(3, Niño.getRegistroCivil());
+            pst.setString(4, Niño.getTipoDeSangre());
+            pst.setString(5, Niño.getSexo());
+            pst.setDate(6, dateSql);
+            pst.setDate(7, dateSql2);
+            pst.setInt(8, Integer.parseInt(Niño.getGrado()));
+            pst.execute();
+            
+            //SQL3
+            String sql3 = "SELECT num_matricula FROM niños WHERE numregistrocivil = '" + registroCivil + "'"; //UNICO
+            pst = conexion.conectar().prepareStatement(sql3);
+            rs = pst.executeQuery();
+            if(rs.next()){
+                matricula = rs.getInt("num_matricula");
+                pst = conexion.conectar().prepareStatement(sql2);
+                pst.setInt(1, Niño.getIdResponsable());
+                pst.setInt(2, matricula);
+                pst.execute();
+            }
             return true;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -52,19 +67,20 @@ public class SqlRegistrarNiños extends Conexion {
 
     public int existeNiño(String Niño) {
 
-        PreparedStatement ps = null; //ps= sentencia preparada;
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        conexion.conectar();
         ResultSet rs = null;
-        Connection con = getConexion();
+        PreparedStatement pst = null; //ps= sentencia preparada;
 
         //cuenta el numero de registros que tiene la tabla cuando usuario
         //sea igual al campo que agergamos
-        String sql = "SELECT count(idAlumno) FROM alumno WHERE idAlumno = ?";
+        String sql = "SELECT count(num_matricula) FROM niños WHERE numregistrocivil = ?";
         try {
 
-            ps = con.prepareStatement(sql);
-            ps.setString(1, Niño);
-            rs = ps.executeQuery();
-
+            pst = conexion.conectar().prepareStatement(sql);
+            pst.setInt(1, Integer.parseInt(Niño));
+            rs = pst.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1);
             }

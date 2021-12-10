@@ -5,38 +5,50 @@
  */
 package Modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author Pablo
  */
 public class niños {
 
-    private int id;
+    private int matricula;
     private String nombres;
-    private String aprellidos;
     private String sexo;
-    private String fechaNacimiento;
-    private String fechaIngreso;
+    private Date fechaNacimiento;
+    private Date fechaIngreso;
     private String grado;
+    private int registroCivil;
     private int idResponsable;
     private String TipoDeSangre;
-    private int idDocente;
 
+    public niños(int matricula, String nombres, String sexo, Date fechaNacimiento, Date fechaIngreso, String grado,int registroCivil, int idResponsable, String TipoDeSangre) {
+        this.matricula = matricula;
+        this.nombres = nombres;
+        this.sexo = sexo;
+        this.fechaNacimiento = fechaNacimiento;
+        this.fechaIngreso = fechaIngreso;
+        this.grado = grado;
+        this.registroCivil = registroCivil;
+        this.idResponsable = idResponsable;
+        this.TipoDeSangre = TipoDeSangre;
+    }
+
+    public niños() {
+    }
+    
+    
+    
+    
     public String getTipoDeSangre() {
         return TipoDeSangre;
     }
-
+    
     public void setTipoDeSangre(String TipoDeSangre) {
         this.TipoDeSangre = TipoDeSangre;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombres() {
         return nombres;
@@ -44,14 +56,6 @@ public class niños {
 
     public void setNombres(String nombres) {
         this.nombres = nombres;
-    }
-
-    public String getAprellidos() {
-        return aprellidos;
-    }
-
-    public void setAprellidos(String aprellidos) {
-        this.aprellidos = aprellidos;
     }
 
     public String getSexo() {
@@ -62,19 +66,19 @@ public class niños {
         this.sexo = sexo;
     }
 
-    public String getFechaNacimiento() {
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getFechaIngreso() {
+    public Date getFechaIngreso() {
         return fechaIngreso;
     }
 
-    public void setFechaIngreso(String fechaIngreso) {
+    public void setFechaIngreso(Date fechaIngreso) {
         this.fechaIngreso = fechaIngreso;
     }
 
@@ -94,12 +98,22 @@ public class niños {
         this.idResponsable = idResponsable;
     }
 
-    public int getIdDocente() {
-        return idDocente;
+    public int getMatricula() {
+        return matricula;
     }
 
-    public void setIdDocente(int idDocente) {
-        this.idDocente = idDocente;
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
     }
+
+    public int getRegistroCivil() {
+        return registroCivil;
+    }
+
+    public void setRegistroCivil(int registroCivil) {
+        this.registroCivil = registroCivil;
+    }
+    
+    
 
 }

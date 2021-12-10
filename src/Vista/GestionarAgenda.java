@@ -327,15 +327,15 @@ public class GestionarAgenda extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
+            //Connection con = conn.getConexion();
 
             String sql = "SELECT idAgenda, Alumno_idAlumno, notaAgenda, Responsable_idResponsable, ID_Docente_Encargado"
                     + " FROM agenda "
                     + where;
 
             System.out.println(sql);
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+            ps = //con.prepareStatement(sql);
+            //rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
             modelo.addColumn("Id Agenda");
@@ -399,13 +399,13 @@ public class GestionarAgenda extends javax.swing.JFrame {
                 PreparedStatement ps = null;
                 ResultSet rss = null;
                 Conexion conn = new Conexion();
-                Connection con = conn.getConexion();
+                //Connection con = conn.getConexion();
 
                 String sql = "SELECT * FROM agenda"
                       +where;
 
                 System.out.println(sql);
-                ps = con.prepareStatement(sql);
+                //ps = con.prepareStatement(sql);
                 rss = ps.executeQuery();
                 if (rss.next()) {
 
@@ -487,16 +487,16 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            //Connection conn = Obconn.getConexion();
 
             int Fila = TablaAgenda.getSelectedRow(); //nos trae la fila seleccionada
             String nombreA = TablaAgenda.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
-
+            /*
             ps = conn.prepareStatement("SELECT idAgenda, Alumno_idAlumno, notaAgenda, Responsable_idResponsable, "
                     + "ID_Docente_Encargado FROM agenda WHERE idAgenda=?");
             ps.setString(1, nombreA);
             rs = ps.executeQuery();
-
+            */
             while (rs.next()) {
 
                 campoID.setText(rs.getString("idAgenda"));
