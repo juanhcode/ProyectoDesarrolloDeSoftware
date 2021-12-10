@@ -18,7 +18,9 @@ import javax.swing.JPanel;
  * @author Pablo
  */
 public class frmRegistroDatosPadre extends javax.swing.JFrame {
+
     FondoPanel fondo = new FondoPanel();
+
     /**
      * Creates new form frmRegistroDatosPadre
      */
@@ -44,12 +46,10 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         campoDocumento = new javax.swing.JTextField();
         campoNombres = new javax.swing.JTextField();
-        campoApellidos = new javax.swing.JTextField();
         campoDireccion = new javax.swing.JTextField();
         campoTelefono = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -69,8 +69,6 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         jLabel2.setText("Documento:");
 
         jLabel3.setText("Nombres:");
-
-        jLabel4.setText("Apellidos:");
 
         jLabel5.setText("Dirección:");
 
@@ -129,30 +127,28 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel8))
-                        .addGap(52, 52, 52)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(campoDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                .addComponent(campoTelefono)
-                                .addComponent(campoDocumento)
-                                .addComponent(campoNombres)
-                                .addComponent(campoApellidos))
-                            .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(Registrar)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3)
-                        .addGap(81, 81, 81))))
+                        .addGap(81, 81, 81))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel5))
+                        .addGap(52, 52, 52)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(campoTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                                .addComponent(campoDocumento)
+                                .addComponent(campoNombres))
+                            .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,19 +163,15 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(campoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(campoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -201,36 +193,30 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         SqlGestionarResponsables modSql = new SqlGestionarResponsables();
         Responsables mod = new Responsables();
 
-        
-       //Valida que ningun campo esté vacio
-        if (campoDocumento.getText().equals("") ||campoNombres.getText().equals("") || campoApellidos.getText().equals("")
-                ||campoDireccion.getText().equals("") || campoTelefono.getText().equals("")
+        //Valida que ningun campo esté vacio
+        if (campoDocumento.getText().equals("") || campoNombres.getText().equals("")
+                || campoDireccion.getText().equals("") || campoTelefono.getText().equals("")
                 || campoParentesco.getSelectedItem().toString().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
 
             if (modSql.existeResponsable(campoDocumento.getText()) == 0) //usuario no existe
             {
-                   
-                    int ConvertirID = Integer.parseInt(campoDocumento.getText());
-                    mod.setDocumento(ConvertirID);
 
-                    mod.setNombre(campoNombres.getText());
-                    mod.setApellido(campoApellidos.getText());
-                    mod.setDirección(campoDireccion.getText());
-                    int ConvertirTEL = Integer.parseInt(campoTelefono.getText());
-                    mod.setTelefono(ConvertirTEL);
-                    mod.setParentesco(campoParentesco.getSelectedItem().toString());
+                int ConvertirID = Integer.parseInt(campoDocumento.getText());
+                mod.setDocumento(ConvertirID);
+                mod.setNombre(campoNombres.getText());
+                mod.setDirección(campoDireccion.getText());
+                int ConvertirTEL = Integer.parseInt(campoTelefono.getText());
+                mod.setTelefono(ConvertirTEL);
+                mod.setParentesco(campoParentesco.getSelectedItem().toString());
 
-
-
-                    if (modSql.registrarResponsables(mod)) {
-                        JOptionPane.showMessageDialog(null, "Registro Guardado");
-                         Limpiar();
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
-                    }
-            
+                if (modSql.registrarResponsables(mod)) {
+                    JOptionPane.showMessageDialog(null, "Registro Guardado");
+                    Limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                }
 
             } else {
                 JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
@@ -253,17 +239,16 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-     private void Limpiar() {
+    private void Limpiar() {
         campoDocumento.setText("");
         campoNombres.setText("");
-        campoApellidos.setText("");
         campoDireccion.setText("");
         campoTelefono.setText("");
         campoParentesco.setSelectedItem("");
-      
+
     }
-    
-     class FondoPanel extends JPanel {
+
+    class FondoPanel extends JPanel {
 
         private Image imagen;
 
@@ -315,7 +300,6 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Registrar;
-    private javax.swing.JTextField campoApellidos;
     private javax.swing.JTextField campoDireccion;
     private javax.swing.JTextField campoDocumento;
     private javax.swing.JTextField campoNombres;
@@ -325,7 +309,6 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;

@@ -5,8 +5,6 @@
  */
 package Modelo;
 
-import static Modelo.Conexion.getConexion;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,22 +18,20 @@ public class SqlGestionarResponsables extends Conexion {
     public boolean registrarResponsables(Responsables res) {
 
         PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
-
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
         //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO responsable (DocumentoResponsable, NombreResponsable, ApellidosResponsable, DirecciónResponsable, TelefonoResponsable, Parentesco) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO responsables (documento_res, nombreres, direccion, numtelefono, parentesco) VALUES(?,?,?,?,?)";
 
         try {
-
-            ps = con.prepareStatement(sql);
+            ps = conexion.conectar().prepareStatement(sql);
             ps.setInt(1, res.getDocumento());
             ps.setString(2, res.getNombre());
-            ps.setString(3, res.getApellido());
-            ps.setString(4, res.getDirección());
-            ps.setInt(5, res.getTelefono());
-            ps.setString(6, res.getParentesco());
+            ps.setString(3, res.getDirección());
+            ps.setInt(4, res.getTelefono());
+            ps.setString(5, res.getParentesco());
             ps.execute();
-
+            ps.close();
             return true;
         } catch (Exception ex) {
             System.out.println(ex);
@@ -48,15 +44,16 @@ public class SqlGestionarResponsables extends Conexion {
 
         PreparedStatement ps = null; //ps= sentencia preparada;
         ResultSet rs = null;
-        Connection con = getConexion();
+        Conexion conexion = new Conexion();
+        conexion.conectar();
 
         //cuenta el numero de registros que tiene la tabla cuando usuario
         //sea igual al campo que agergamos
-        String sql = "SELECT count(DocumentoResponsable) FROM responsable WHERE DocumentoResponsable = ?";
+        String sql = "SELECT count(documento_res) FROM responsables WHERE documento_res = ?";
         try {
-
-            ps = con.prepareStatement(sql);
-            ps.setString(1, res);
+            
+            ps = conexion.conectar().prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(res));
             rs = ps.executeQuery();
 
             if (rs.next()) {
