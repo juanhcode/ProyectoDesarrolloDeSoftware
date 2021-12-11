@@ -25,6 +25,11 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -73,12 +78,14 @@ public class GestionarAgenda extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        campoID = new javax.swing.JTextField();
-        campodDOCA = new javax.swing.JTextField();
+        campoCodigoA = new javax.swing.JTextField();
+        campoMatriculaN = new javax.swing.JTextField();
         campoNOTA = new javax.swing.JTextField();
-        campoDOCR = new javax.swing.JTextField();
-        campoDOCD = new javax.swing.JTextField();
+        campoFecha = new javax.swing.JTextField();
+        campoGrado = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        campoDescripcion = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -107,19 +114,19 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
         TablaAgenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Id Agenda", "Id Alumno", "Nota", "Id Responsable", "Id Docente"
+                "Id Agenda", "matriculaNiño", "Nota", "Fecha", "Grado", "Descripcion"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -136,13 +143,6 @@ public class GestionarAgenda extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(TablaAgenda);
-        if (TablaAgenda.getColumnModel().getColumnCount() > 0) {
-            TablaAgenda.getColumnModel().getColumn(0).setResizable(false);
-            TablaAgenda.getColumnModel().getColumn(1).setResizable(false);
-            TablaAgenda.getColumnModel().getColumn(2).setResizable(false);
-            TablaAgenda.getColumnModel().getColumn(3).setResizable(false);
-            TablaAgenda.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         Reporte.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         Reporte.setText("Generar Reporte");
@@ -180,25 +180,40 @@ public class GestionarAgenda extends javax.swing.JFrame {
         jLabel2.setText("ID:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel3.setText("DOC Alumno:");
+        jLabel3.setText("Matricula Alumno:");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel4.setText("Nota:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel5.setText("DOC Responsable:");
+        jLabel5.setText("Fecha:");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel6.setText("DOC Docente:");
+        jLabel6.setText("Grado:");
 
-        campodDOCA.addActionListener(new java.awt.event.ActionListener() {
+        campoMatriculaN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campodDOCAActionPerformed(evt);
+                campoMatriculaNActionPerformed(evt);
+            }
+        });
+
+        campoGrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoGradoActionPerformed(evt);
             }
         });
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel7.setText("DOC Docente:");
+        jLabel7.setText("Grado");
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        jLabel8.setText("Descricpcion:");
+
+        campoDescripcion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoDescripcionActionPerformed(evt);
+            }
+        });
 
         jMenu3.setText("Archivo");
 
@@ -228,22 +243,18 @@ public class GestionarAgenda extends javax.swing.JFrame {
                             .addComponent(Registrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(Reporte)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Atras))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(Modificar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(23, 23, 23)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(campoA)
-                                    .addComponent(ConsulAgenda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(campoA, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(Modificar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ConsulAgenda))))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,33 +263,45 @@ public class GestionarAgenda extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(campoDOCR, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campoDOCD, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campoID, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(campodDOCA)
-                            .addComponent(campoNOTA))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(campoDescripcion)
+                                .addGap(9, 9, 9))
+                            .addComponent(campoFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                            .addComponent(campoGrado)
+                            .addComponent(campoCodigoA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoMatriculaN, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(campoNOTA, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addGap(78, 78, 78)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(214, 214, 214)
+                .addComponent(jLabel7)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(campoA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(campoID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoCodigoA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(campodDOCA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoMatriculaN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -286,16 +309,16 @@ public class GestionarAgenda extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
-                            .addComponent(campoDOCR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(campoFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(campoDOCD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                            .addComponent(campoGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(campoA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel8)
+                            .addComponent(campoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Registrar)
                             .addComponent(Modificar)
@@ -326,7 +349,7 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
             PreparedStatement ps = null;
             ResultSet rs = null;
-            Conexion conn = new Conexion();
+            Conexion con = new Conexion();
             //Connection con = conn.getConexion();
 
             String sql = "SELECT idAgenda, Alumno_idAlumno, notaAgenda, Responsable_idResponsable, ID_Docente_Encargado"
@@ -334,8 +357,8 @@ public class GestionarAgenda extends javax.swing.JFrame {
                     + where;
 
             System.out.println(sql);
-            ps = //con.prepareStatement(sql);
-            //rs = ps.executeQuery();
+            //ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
             modelo.addColumn("Id Agenda");
@@ -437,28 +460,33 @@ public class GestionarAgenda extends javax.swing.JFrame {
         agenda mod = new agenda();
 
         //Valida que ningun campo esté vacio
-        if (campoID.getText().equals("") || campodDOCA.getText().equals("") || campoNOTA.getText().equals("")
-                || campoDOCR.getText().equals("") || campoDOCD.getText().equals("")) {
+        if (campoCodigoA.getText().equals("") || campoMatriculaN.getText().equals("") || campoNOTA.getText().equals("")
+                || campoFecha.getText().equals("") || campoGrado.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
 
-            if (modSql.existePago(campodDOCA.getText()) == 0) //usuario no existe
+            //if (modSql.existePago(campoMatriculaN.getText()) == 0) //usuario no existe
             {
 
-                int GuardarId = Integer.parseInt(campoID.getText());
+                int GuardarId = Integer.parseInt(campoCodigoA.getText());
                 mod.setId(GuardarId);
 
-                int GuardarDOCA = Integer.parseInt(campodDOCA.getText());
-                mod.setIdA(GuardarDOCA);
-
-                int GuardarNOTA = Integer.parseInt(campoNOTA.getText());
-                mod.setNota(GuardarNOTA);
-
-                int GuardarDOCR = Integer.parseInt(campoDOCR.getText());
-                mod.setIdR(GuardarDOCR);
-
-                int GuardarDOCD = Integer.parseInt(campoDOCD.getText());
-                mod.setIdD(GuardarDOCD);
+                int GuardarMatricula = Integer.parseInt(campoMatriculaN.getText());
+                mod.setMatriculaNinio(GuardarMatricula);
+                
+                mod.setNota(campoNOTA.getText());
+                
+                int GuardarGrado = Integer.parseInt(campoGrado.getText());
+                mod.setGrado(GuardarGrado);
+                
+                mod.setDescripcion(campoDescripcion.getText());
+                
+                try {
+                Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(campoFecha.getText());
+                mod.setFecha(date1);
+                } catch (ParseException ex) {
+                    Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
                 if (modSql.registrarAgenda(mod)) {
                     JOptionPane.showMessageDialog(null, "Registro Guardado");
@@ -467,7 +495,7 @@ public class GestionarAgenda extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
                 }
 
-            } else {
+            //} else {
                 JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
             }
 
@@ -477,9 +505,9 @@ public class GestionarAgenda extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void campodDOCAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campodDOCAActionPerformed
+    private void campoMatriculaNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoMatriculaNActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campodDOCAActionPerformed
+    }//GEN-LAST:event_campoMatriculaNActionPerformed
 
     private void TablaAgendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaAgendaMouseClicked
         PreparedStatement ps = null;
@@ -499,19 +527,19 @@ public class GestionarAgenda extends javax.swing.JFrame {
             */
             while (rs.next()) {
 
-                campoID.setText(rs.getString("idAgenda"));
-                campoID.setEditable(false);
-                campoID.setEnabled(false);
-                campodDOCA.setText(rs.getString("Alumno_idAlumno"));
-                campodDOCA.setEditable(false);
-                campodDOCA.setEnabled(false);
+                campoCodigoA.setText(rs.getString("idAgenda"));
+                campoCodigoA.setEditable(false);
+                campoCodigoA.setEnabled(false);
+                campoMatriculaN.setText(rs.getString("Alumno_idAlumno"));
+                campoMatriculaN.setEditable(false);
+                campoMatriculaN.setEnabled(false);
                 campoNOTA.setText(rs.getString("notaAgenda"));
-                campoDOCR.setText(rs.getString("Responsable_idResponsable"));
-                campoDOCR.setEditable(false);
-                campoDOCR.setEnabled(false);
-                campoDOCD.setText(rs.getString("ID_Docente_Encargado"));
-                campoDOCD.setEditable(false);
-                campoDOCD.setEnabled(false);
+                campoFecha.setText(rs.getString("Responsable_idResponsable"));
+                campoFecha.setEditable(false);
+                campoFecha.setEnabled(false);
+                campoGrado.setText(rs.getString("ID_Docente_Encargado"));
+                campoGrado.setEditable(false);
+                campoGrado.setEnabled(false);
 
             }
         } catch (SQLException ex) {
@@ -530,6 +558,14 @@ public class GestionarAgenda extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void campoGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoGradoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoGradoActionPerformed
+
+    private void campoDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDescripcionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_campoDescripcionActionPerformed
     class FondoPanel extends JPanel {
 
         private Image imagen;
@@ -588,11 +624,12 @@ public class GestionarAgenda extends javax.swing.JFrame {
     private javax.swing.JButton Reporte;
     private javax.swing.JTable TablaAgenda;
     private javax.swing.JTextField campoA;
-    private javax.swing.JTextField campoDOCD;
-    private javax.swing.JTextField campoDOCR;
-    private javax.swing.JTextField campoID;
+    private javax.swing.JTextField campoCodigoA;
+    private javax.swing.JTextField campoDescripcion;
+    private javax.swing.JTextField campoFecha;
+    private javax.swing.JTextField campoGrado;
+    private javax.swing.JTextField campoMatriculaN;
     private javax.swing.JTextField campoNOTA;
-    private javax.swing.JTextField campodDOCA;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -601,6 +638,7 @@ public class GestionarAgenda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar2;

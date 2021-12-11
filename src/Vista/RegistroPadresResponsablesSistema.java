@@ -10,6 +10,9 @@ import Modelo.SqlUsuarios;
 import Modelo.usuarios;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -241,8 +244,11 @@ public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
                         mod.setNombre(txtNombre.getText());
                         mod.setCorreo(txtCorreo.getText());
                         mod.setId_tipo(3);
-
-                        if (modSql.registrar(mod)) {
+                        TimeZone.setDefault(TimeZone.getTimeZone("America/Bogota"));
+                        SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        Date date = new Date();
+                        String fecha = date_format.format(date);
+                        if (modSql.registrar(mod, fecha)) {
                             JOptionPane.showMessageDialog(null, "Registro Guardado");
                             Limpiar();
                         } else {

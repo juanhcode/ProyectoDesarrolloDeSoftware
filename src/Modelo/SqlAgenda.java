@@ -5,7 +5,6 @@
  */
 package Modelo;
 
-import static Modelo.Conexion.getConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,18 +19,22 @@ public class SqlAgenda extends Conexion {
     public boolean registrarAgenda(agenda Agenda) {
 
         PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
+        Conexion conexion = new Conexion();
 
         //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO agenda (idAgenda, Alumno_idAlumno, notaAgenda, Responsable_idResponsable, ID_Docente_Encargado) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO agenda (codigo, nota, descripcion, fecha, niño, grado) VALUES(?,?,?,?,?,?)";
+        
+        java.sql.Date dateSql= new java.sql.Date(Agenda.getFecha().getYear(),
+                Agenda.getFecha().getMonth(),Agenda.getFecha().getDay());
         try {
 
-            ps = con.prepareStatement(sql);
+            ps = conexion.conectar().prepareStatement(sql);
             ps.setInt(1, Agenda.getId());
-            ps.setInt(2, Agenda.getIdA());
-            ps.setInt(3, Agenda.getNota());
-            ps.setInt(4, Agenda.getIdR());
-            ps.setInt(5, Agenda.getIdD());
+            ps.setString(2, Agenda.getNota());
+            ps.setString(3, Agenda.getDescripcion());
+            ps.setDate(4, dateSql);
+            ps.setInt(5, Agenda.getMatriculaNinio());
+            ps.setInt(6, Agenda.getGrado());
 
             ps.execute();
 
@@ -42,19 +45,19 @@ public class SqlAgenda extends Conexion {
         }
         return false;
     }
-
+/*
     public int existePago(String agenda) {
 
         PreparedStatement ps = null; //ps= sentencia preparada;
         ResultSet rs = null;
-        Connection con = getConexion();
+        Conexion conexion = new Conexion();
 
         //cuenta el numero de registros que tiene la tabla cuando usuario
         //sea igual al campo que agergamos
         String sql = "SELECT count(Alumno_idAlumno) FROM pagos WHERE Alumno_idAlumno = ?";
         try {
 
-            ps = con.prepareStatement(sql);
+            ps = conexion.conectar().prepareStatement(sql);
             ps.setString(1, agenda);
             rs = ps.executeQuery();
 
@@ -70,5 +73,5 @@ public class SqlAgenda extends Conexion {
         return 1;
 
     }
-
+*/
 }

@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Vista/frmgestionardocente.java</file>
-            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Vista/BienvenidoUsuario.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Vista/frmconsultarAgenda.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/SqlRegistrarNiños.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/agenda.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Vista/frmRegistroNiños.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/SqlGestionarResponsables.java</file>
             <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/SqlAgenda.java</file>
-            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/Conexion.java</file>
-            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/Responsables.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Modelo/SqlUsuarios.java</file>
+            <file>file:/V:/Trabajos%20java/ProyectoDesarrolloDeSoftware/src/Vista/GestionarAgenda.java</file>
         </group>
     </open-files>
 </project-private>

@@ -5,7 +5,7 @@
  */
 package Modelo;
 
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +25,6 @@ public class SqlUsuarios extends Conexion {
 
     public boolean registrar(usuarios usr,String fecha) {
 
-        Connection conn = null;
         Conexion conexion = new Conexion();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
@@ -55,9 +54,7 @@ public class SqlUsuarios extends Conexion {
     //Validar si un usuario ya existe
     public int existeUsuario(String Usuario) {
 
-        Connection conn = null;
         Conexion conexion = new Conexion();
-        conexion.conectar();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
 

@@ -193,9 +193,9 @@ public class frmconsultarAgenda extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
+            Connection con = conn.getCon();
 
-            String sql = "SELECT Alumno_idAlumno, notaAgenda, Responsable_idResponsable FROM agenda " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
+            String sql = "SELECT num_matricula, notaAgenda, Responsable_idResponsable FROM agenda " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
                     +where;
             System.out.println(sql);
             ps = con.prepareStatement(sql);

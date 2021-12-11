@@ -5,6 +5,8 @@
  */
 package Modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author Pablo
@@ -12,10 +14,12 @@ package Modelo;
 public class agenda {
 
     private int id;
-    private int idA;
-    private int Nota;
-    private int idR;
-    private int idD;
+    private int matriculaNinio;
+    private String Nota;
+    private String Descripcion;
+    private Date Fecha;
+    private int grado;
+ 
 
     public int getId() {
         return id;
@@ -25,36 +29,43 @@ public class agenda {
         this.id = id;
     }
 
-    public int getIdA() {
-        return idA;
+    public int getMatriculaNinio() {
+        return matriculaNinio;
     }
 
-    public void setIdA(int idA) {
-        this.idA = idA;
+    public void setMatriculaNinio(int matriculaNinio) {
+        this.matriculaNinio = matriculaNinio;
     }
 
-    public int getNota() {
+    public String getNota() {
         return Nota;
     }
 
-    public void setNota(int Nota) {
+    public void setNota(String Nota) {
         this.Nota = Nota;
     }
 
-    public int getIdR() {
-        return idR;
+    public String getDescripcion() {
+        return Descripcion;
     }
 
-    public void setIdR(int idR) {
-        this.idR = idR;
+    public void setDescripcion(String Descripcion) {
+        this.Descripcion = Descripcion;
     }
 
-    public int getIdD() {
-        return idD;
+    public Date getFecha(){
+        return Fecha;
     }
 
-    public void setIdD(int idD) {
-        this.idD = idD;
+    public void setFecha(Date Fecha) {
+        this.Fecha = Fecha;
+    }
+    
+     public int getGrado() {
+        return grado;
     }
 
+    public void setGrado(int grado) {
+        this.grado = grado;
+    }
 }
