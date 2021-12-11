@@ -6,8 +6,6 @@
 package Vista;
 
 import Modelo.Conexion;
-import Modelo.Responsables;
-import Modelo.SqlGestionarResponsables;
 import Modelo.SqlRegistrarNiños;
 import Modelo.niños;
 import java.awt.Graphics;
@@ -20,7 +18,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -393,7 +390,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         niños mod = new niños();
 
         //Valida que ningun campo esté vacio
-        if (campoRegistroC.getText().equals("") || campoMatricula.getText().equals("") || campoSexo.getSelectedItem().toString().equals("") || campoFecha.getText().equals("")
+        if (campoRegistroC.getText().equals("")|| campoSexo.getSelectedItem().toString().equals("") || campoFecha.getText().equals("")
                 || campoFechaIngreso.getText().equals("") || CampoGrado.getSelectedItem().toString().equals("")
                 || campoResponsable.getText().equals("")
                 || TipoSangre.getSelectedItem().toString().equals("") || campoFecha.getText().equals("")) {
@@ -401,10 +398,9 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         } else {
             if (modSql.existeNiño(campoRegistroC.getText()) == 0) //usuario no existe
             {
-
                 int ConvertirDocumentoNiño = Integer.parseInt(campoRegistroC.getText());
                 mod.setRegistroCivil(ConvertirDocumentoNiño);
-                mod.setNombres(campoMatricula.getText());
+                mod.setNombres(campoNombres.getText());
                 mod.setSexo(campoSexo.getSelectedItem().toString());
                 try {
                     Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(campoFecha.getText());
@@ -516,38 +512,42 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         PreparedStatement ps = null;
 
         try {
-            //con = getConexion();
             ps = conexion.conectar().prepareStatement("begin;"
-                    + "UPDATE se_relaciona SET codigo_responsable=? where codigo_responsable=?;"
- 		    + "UPDATE niños SET nombre=?, sexo=?, grado=?, tpsangre=?, numregistrocivil=? WHERE numregistrocivil=?;"
+                    + "UPDATE se_relaciona SET codigo_responsable=? where num_matricula_niño =?;"
+ 		    + "UPDATE niños SET nombre=?, sexo=?, grado=?,fecha_nacimiento=?,fecha_ingreso=?, tpsangre=?, numregistrocivil=? WHERE num_matricula=?;"
                     + "commit;");
-            String copiaResponsable = campoResponsable.getText();
-            
-            //ps = con.prepareStatement("UPDATE se_relaciona SET codigo_responsable WHERE codigo_responsable=?");
-            //nt DocumentoR = Integer.parseInt(campoResponsable.getText());
             ps.setInt(1, Integer.parseInt(campoResponsable.getText()));
-            ps.setInt(2, Integer.parseInt(copiaResponsable));
+            ps.setInt(2,Integer.parseInt(campoMatricula.getText()));
             ps.setString(3, campoNombres.getText());
             ps.setString(4, campoSexo.getSelectedItem().toString());
-            //String sDate1= campoFecha.getText();
-            //String sDate2 =  campoFechaIngreso.getText();
-            //Date date1=new SimpleDateFormat("yyyy/MM/dd").parse(sDate1);
-            //Date date2=new SimpleDateFormat("yyyy/MM/dd").parse(sDate2);  
-            //ps.setDate(4, (java.sql.Date) date1);
-            //ps.setDate(5, (java.sql.Date) date2);
-            //ps.setString(4, campoFechaIngreso.getText());
-            //ps.setString(5, CampoGrado.getSelectedItem().toString());
-            ps.setString(6, TipoSangre.getSelectedItem().toString());
+            if(CampoGrado.getSelectedItem().toString().equals("Iniciación")){
+                ps.setInt(5, 1);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Párvulos")){
+                ps.setInt(5, 2);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Prejardín")){
+                ps.setInt(5, 3);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Jardín")){
+                ps.setInt(5, 4);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Transición")){
+                ps.setInt(5, 5);
+            }
+            java.util.Date dateUtil=new java.util.Date(campoFecha.getText());                                                
+            java.sql.Date dateSql= new java.sql.Date(dateUtil.getYear(),dateUtil.getMonth(),dateUtil.getDay());
+            java.util.Date dateUtil1=new java.util.Date(campoFechaIngreso.getText());                                                
+            java.sql.Date dateSql1= new java.sql.Date(dateUtil1.getYear(),dateUtil1.getMonth(),dateUtil1.getDay());
+            ps.setDate(6, dateSql);
+            ps.setDate(7, dateSql1);
+            ps.setString(8, TipoSangre.getSelectedItem().toString());
             int CampoID = Integer.parseInt(campoRegistroC.getText());
-            ps.setInt(7, Integer.parseInt(campoRegistroC.getText()));
-            
-
+            ps.setInt(9, Integer.parseInt(campoRegistroC.getText()));
+            ps.setInt(10,Integer.parseInt(campoMatricula.getText()));
             int res = ps.executeUpdate();
+            System.out.println("Resultado" + res);
             if (res > 0) {
-                JOptionPane.showMessageDialog(null, "Datos del Alumno Modificados Correctamente");
+                JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Alumno");
                 Limpiar();
             } else {
-                JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Alumno");
+                JOptionPane.showMessageDialog(null, "Datos del Alumno Modificados Correctamente");
                 Limpiar();
             }
             ps.close();
@@ -624,6 +624,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
     }//GEN-LAST:event_campoRegistroCActionPerformed
     private void Limpiar() {
         campoRegistroC.setText("");
+        campoNombres.setText("");
         campoMatricula.setText("");
         campoSexo.setSelectedItem("");
         campoFecha.setText("");

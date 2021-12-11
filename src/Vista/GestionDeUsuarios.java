@@ -6,7 +6,6 @@
 package Vista;
 
 import Modelo.Conexion;
-import static Modelo.Conexion.getConexion;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.sql.Connection;
@@ -307,12 +306,12 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
+            //Connection con = conn.getConexion();
 
             String sql = "SELECT id_Usuario, usuario, contraseña, nombre, correo, Tipo_Usuario_id_tipo  FROM usuarios " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
                     +where;
             System.out.println(sql);
-            ps = con.prepareStatement(sql);
+            //ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
@@ -347,7 +346,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
 
         try {
 
-            con = getConexion();
+            //con = getConexion();
 
             ps = con.prepareStatement("UPDATE usuarios SET  usuario=?, contraseña=?, nombre=?, correo=?,"
                     + " Tipo_Usuario_id_tipo WHERE id_Usuario=?");
@@ -393,13 +392,14 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            //Connection conn = Obconn.getConexion();
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreU = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
-
+            /*
             ps = conn.prepareStatement("SELECT id_Usuario, usuario, contraseña, nombre, "
                     + "correo, Tipo_Usuario_id_tipo FROM usuarios WHERE id_Usuario=?");
+            */
             ps.setString(1, nombreU);
             rs = ps.executeQuery();
 
