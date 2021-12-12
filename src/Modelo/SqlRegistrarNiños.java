@@ -66,9 +66,7 @@ public class SqlRegistrarNiños extends Conexion {
 
     public int existeNiño(String Niño) {
 
-        Connection conn = null;
         Conexion conexion = new Conexion();
-        conexion.conectar();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
 

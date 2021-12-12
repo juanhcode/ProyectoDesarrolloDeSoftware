@@ -19,7 +19,6 @@ public class NewMain {
         //int cantidad = sqlU.existeUsuario("juan");
         //System.out.println("Cantidad de usuarios con el mismo nombre" + cantidad );
         
-        sqlU.existePadre(454);
     }
     
 }

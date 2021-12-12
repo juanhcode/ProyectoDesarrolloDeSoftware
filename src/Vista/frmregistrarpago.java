@@ -6,7 +6,6 @@
 package Vista;
 
 import Modelo.Conexion;
-import static Modelo.Conexion.getConexion;
 import Modelo.Pagos;
 import Modelo.SqlPagos;
 import java.awt.Graphics;
@@ -16,6 +15,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,13 +58,11 @@ public class frmregistrarpago extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        campoDOC = new javax.swing.JTextField();
+        campoCodigoPago = new javax.swing.JTextField();
         campoFECHA = new javax.swing.JTextField();
         campoValor = new javax.swing.JTextField();
-        campoResponsable = new javax.swing.JTextField();
-        campoDOCAlumno = new javax.swing.JTextField();
+        campoMatricula = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
@@ -69,6 +72,7 @@ public class frmregistrarpago extends javax.swing.JFrame {
         Eliminar = new javax.swing.JButton();
         ConsulPago = new javax.swing.JButton();
         ConsultaC = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -77,7 +81,7 @@ public class frmregistrarpago extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("<html>DOC Registro Pago:</html> ");
+        jLabel1.setText("Codigo Pago:");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("Fecha:");
@@ -85,15 +89,12 @@ public class frmregistrarpago extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Valor:");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setText("<html>DOC Responsable:</html>");
-
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel5.setText("<html>DOC Alumno:</html>");
+        jLabel5.setText("Matricula Niño:");
 
-        campoDOC.addActionListener(new java.awt.event.ActionListener() {
+        campoCodigoPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoDOCActionPerformed(evt);
+                campoCodigoPagoActionPerformed(evt);
             }
         });
 
@@ -103,32 +104,38 @@ public class frmregistrarpago extends javax.swing.JFrame {
             }
         });
 
-        campoResponsable.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoResponsableActionPerformed(evt);
-            }
-        });
-
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Registro De Pagos");
 
         Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "DOC Pago", "Fecha", "Valor", "DOC Responsable", "DOC Alumno"
+                "Codigo Pago", "Fecha", "Valor", "Matricula Niño"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(Tabla);
@@ -173,6 +180,9 @@ public class frmregistrarpago extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel4.setText("Recuerde que al registrar el codigo pago, este no podra ser modificado despues.");
+
         jMenu3.setText("Archivo");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
@@ -196,82 +206,80 @@ public class frmregistrarpago extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3))
-                                .addGap(46, 46, 46)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(campoValor, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                                    .addComponent(campoFECHA, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(campoDOC, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(campoResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(campoDOCAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(197, 197, 197)
                                 .addComponent(jLabel6))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(Registrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Modificar)
-                                .addGap(14, 14, 14)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(ConsulPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(ConsultaC))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(Eliminar)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(Registrar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Modificar)
+                                        .addGap(14, 14, 14)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(ConsulPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(ConsultaC))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(Eliminar)))
                                 .addGap(40, 40, 40)
                                 .addComponent(Atras)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 350, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3))
+                                .addGap(65, 65, 65)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(campoFECHA, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                    .addComponent(campoValor)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(campoCodigoPago, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                                    .addComponent(campoMatricula))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel6)
-                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(19, 19, 19)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(campoDOC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoCodigoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(campoFECHA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(campoValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addComponent(campoResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                        .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(campoDOCAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5)
+                            .addComponent(campoMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ConsultaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(Registrar)
@@ -285,13 +293,9 @@ public class frmregistrarpago extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void campoDOCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDOCActionPerformed
+    private void campoCodigoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoPagoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campoDOCActionPerformed
-
-    private void campoResponsableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoResponsableActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoResponsableActionPerformed
+    }//GEN-LAST:event_campoCodigoPagoActionPerformed
 
     private void campoFECHAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoFECHAActionPerformed
         // TODO add your handling code here:
@@ -306,29 +310,26 @@ public class frmregistrarpago extends javax.swing.JFrame {
 
     private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
 
+        Conexion conexion = new Conexion();
         Connection con = null;
         PreparedStatement ps = null;
 
         try {
+            ps = conexion.conectar().prepareStatement("UPDATE pago_matricula SET  fecha_pago=?, valor_pago=?, codigo_niño=?"
+                    + " WHERE codigompk =?");
 
-            con = getConexion();
+            java.util.Date dateUtil = new java.util.Date(campoFECHA.getText());
+            java.sql.Date dateSql = new java.sql.Date(dateUtil.getYear(), dateUtil.getMonth(), dateUtil.getDay());
+            ps.setDate(1, dateSql);
 
-            ps = con.prepareStatement("UPDATE pagos SET  FechaPagos=?, ValorPagos=?, idResponsable=?,"
-                    + " idAlumno=? WHERE IDRegistroPago=?");
-
-            ps.setString(1, campoFECHA.getText());
-            
             int CampoValor = Integer.parseInt(campoValor.getText());
             ps.setInt(2, CampoValor);
-            
-            int CampoR = Integer.parseInt(campoResponsable.getText());
-            ps.setInt(3, CampoR);
-            
-            int CampoA = Integer.parseInt(campoDOCAlumno.getText());
-            ps.setInt(4, CampoA);
-            
-            int CampoID = Integer.parseInt(campoDOC.getText());
-            ps.setInt(5, CampoID);
+
+            int CampoC = Integer.parseInt(campoMatricula.getText());
+            ps.setInt(3, CampoC);
+
+            int CampoID = Integer.parseInt(campoCodigoPago.getText());
+            ps.setInt(4, CampoID);
 
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -350,36 +351,40 @@ public class frmregistrarpago extends javax.swing.JFrame {
         Pagos mod = new Pagos();
 
         //Valida que ningun campo esté vacio
-        if (campoDOC.getText().equals("") || campoFECHA.getText().equals("") || campoValor.getText().equals("")
-                || campoResponsable.getText().equals("") || campoDOCAlumno.getText().equals("")) {
+        if (campoCodigoPago.getText().equals("") || campoFECHA.getText().equals("") || campoValor.getText().equals("")
+                || campoMatricula.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
 
-            if (modSql.existePago(campoResponsable.getText()) == 0) //usuario no existe
+            if (modSql.existePago(Integer.parseInt(campoCodigoPago.getText())) == 0) //usuario no existe
             {
 
-                    int GuardarId = Integer.parseInt(campoDOC.getText());
-                    mod.setDocRegistroPago(GuardarId);
-                    
-                    mod.setFecha(campoFECHA.getText());
-                    
-                    int GuardarValor = Integer.parseInt(campoValor.getText());
-                    mod.setValor(GuardarValor);
-                    
-                     int GuardarDOCR = Integer.parseInt(campoResponsable.getText());
-                    mod.setIdResponsable(GuardarDOCR);
-                    
-                     int GuardarDOCA = Integer.parseInt(campoDOCAlumno.getText());
-                    mod.setIdAlumno(GuardarDOCA);
-                   
+                int GuardarId = Integer.parseInt(campoCodigoPago.getText());
+                mod.setDocRegistroPago(GuardarId);
 
+                try {
+                    Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(campoFECHA.getText());
+                    mod.setFecha(date1);
+                } catch (ParseException ex) {
+                    Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                int GuardarValor = Integer.parseInt(campoValor.getText());
+                if (GuardarValor >= 0) {
+                    mod.setValor(GuardarValor);
+
+                    int GuardarDOCA = Integer.parseInt(campoMatricula.getText());
+                    mod.setMatricula_niño(GuardarDOCA);
 
                     if (modSql.registrar(mod)) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
-                         limpiar();
+                        limpiar();
                     } else {
                         JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                }
 
             } else {
                 JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
@@ -390,17 +395,18 @@ public class frmregistrarpago extends javax.swing.JFrame {
     }//GEN-LAST:event_RegistrarActionPerformed
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
-       PreparedStatement ps = null;
+        PreparedStatement ps = null;
         try {
 
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            Connection conn = Obconn.conectar();
 
             int Fila = Tabla.getSelectedRow();
             String id = Tabla.getValueAt(Fila, 0).toString();
+            int codigoM = Integer.parseInt(id);
 
-            ps = conn.prepareStatement("DELETE FROM pagos WHERE IDRegistroPago=?");
-            ps.setString(1, id);
+            ps = conn.prepareStatement("DELETE FROM pago_matricula WHERE codigompk=?");
+            ps.setInt(1, codigoM);
             ps.execute();
 
             // modelo.removeRow(Fila);
@@ -414,10 +420,10 @@ public class frmregistrarpago extends javax.swing.JFrame {
     }//GEN-LAST:event_EliminarActionPerformed
 
     private void ConsulPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsulPagoActionPerformed
-         String consultaC = ConsultaC.getText();
+        String consultaC = ConsultaC.getText();
         String where = "";
         if (!"".equals((consultaC))) {
-            where = "WHERE IDRegistroPago = '" + consultaC + "'";
+            where = "WHERE codigompk = '" + consultaC + "'";
 
         }
         try {
@@ -427,22 +433,20 @@ public class frmregistrarpago extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
 
-            String sql = "SELECT IDRegistroPago, FechaPagos, ValorPagos, idResponsable, idAlumno FROM pagos " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes 
+            String sql = "SELECT codigompk, fecha_pago, valor_pago, codigo_niño FROM pago_matricula " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes 
                     + where;
             System.out.println(sql);
-            ps = con.prepareStatement(sql);
+            ps = conn.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
             modelo.addColumn("DOC Pago");
             modelo.addColumn("Fecha");
             modelo.addColumn("Valor");
-            modelo.addColumn("DOC Responsable");
-            modelo.addColumn("DOC Alumno");
+            modelo.addColumn("Matricula Niño");
             //Condicion para los anchos de la tableta xd 
-            int[] anchos = {150, 50, 50, 150, 150};
+            int[] anchos = {100, 50, 50, 100};
             for (int i = 0; i < Tabla.getColumnCount(); i++) {
                 Tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
@@ -467,13 +471,39 @@ public class frmregistrarpago extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void TablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaMouseClicked
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            Conexion Obconn = new Conexion();
+
+            int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
+            String nombreA = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
+
+            ps = Obconn.conectar().prepareStatement("SELECT codigompk, fecha_pago, valor_pago, codigo_niño from pago_matricula WHERE codigompk=?");
+            ps.setInt(1, Integer.parseInt(nombreA));
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                campoCodigoPago.setText(rs.getInt("codigompk") + "");
+                Date date = rs.getDate("fecha_pago");  
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");  
+                String strDate = dateFormat.format(date);
+                campoFECHA.setText(strDate);
+                campoValor.setText(rs.getInt("valor_pago") + "");
+                campoMatricula.setText(rs.getInt("codigo_niño") + "");
+                
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.toString());
+        }
+    }//GEN-LAST:event_TablaMouseClicked
     private void limpiar() {
-        campoDOC.setText("");
+        campoCodigoPago.setText("");
         campoFECHA.setText("");
         campoValor.setText("");
-        campoResponsable.setText("");
-        campoDOCAlumno.setText("");
-          }
+        campoMatricula.setText("");
+    }
 
     class FondoPanel extends JPanel {
 
@@ -533,10 +563,9 @@ public class frmregistrarpago extends javax.swing.JFrame {
     private javax.swing.JButton Modificar;
     private javax.swing.JButton Registrar;
     private javax.swing.JTable Tabla;
-    private javax.swing.JTextField campoDOC;
-    private javax.swing.JTextField campoDOCAlumno;
+    private javax.swing.JTextField campoCodigoPago;
     private javax.swing.JTextField campoFECHA;
-    private javax.swing.JTextField campoResponsable;
+    private javax.swing.JTextField campoMatricula;
     private javax.swing.JTextField campoValor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
