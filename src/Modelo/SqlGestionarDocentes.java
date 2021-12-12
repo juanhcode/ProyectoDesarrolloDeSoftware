@@ -27,19 +27,18 @@ public class SqlGestionarDocentes extends Conexion {
         PreparedStatement ps = null;
         
         //Aqui se guardan los datos a la base de datos usuarios tabla gestionar_docentes.
-        String sql = "INSERT INTO docente (documento_docente, nombres, apellidos_docente, telefono_docentes, "
-                + "correodoc, estudios, grado) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO docente (documento_docente, nombre_docente, apellidos_docente, "
+                + "telefono_docente, correodoc, estudios) VALUES(?,?,?,?,?,?)";
 
         try {
 
-            ps = con.prepareStatement(sql);
+            ps = conexion.conectar().prepareStatement(sql);
             ps.setInt(1, usr.getDocumento());
             ps.setString(2, usr.getNombres());
             ps.setString(3, usr.getApellidos());
             ps.setInt(4, usr.getTelefono());
             ps.setString(5, usr.getCorreo());
             ps.setString(6, usr.getEstudios());
-            ps.setString(7, usr.getGrado());
             ps.execute();
 
             return true;
@@ -63,8 +62,8 @@ public class SqlGestionarDocentes extends Conexion {
         String sql = "SELECT count(documento_docente) FROM docente WHERE documento_docente = ?";
         try {
 
-            ps = con.prepareStatement(sql);
-            ps.setString(1, docente);
+            ps = conexion.conectar().prepareStatement(sql);
+            ps.setInt(1, Integer.parseInt(docente));
             rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -80,10 +79,6 @@ public class SqlGestionarDocentes extends Conexion {
 
     }
      
-     
-     
-     
-
      
       //Validar Correo Electronico
     public boolean ValidarEmail2(String correo) {

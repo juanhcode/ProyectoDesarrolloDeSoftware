@@ -93,7 +93,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         CampoDocu = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         Consultar = new javax.swing.JButton();
@@ -102,7 +101,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
         ConsultaC = new javax.swing.JTextField();
-        Grado = new javax.swing.JComboBox<String>();
         jLabel8 = new javax.swing.JLabel();
         CampoEstudios = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
@@ -151,9 +149,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Correo:");
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setText("<html> Grado Asignado: </html>");
 
         jButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jButton1.setText("Atras");
@@ -220,9 +215,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(Tabla);
 
-        Grado.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        Grado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Iniciación","Párvulos","Prejardín","Jardín","Transición" }));
-
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Estudios:");
 
@@ -261,9 +253,8 @@ public class frmgestionardocente extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel3)
-                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel8))
-                                        .addGap(80, 80, 80)
+                                        .addGap(81, 81, 81)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(CampoEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(CampoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +264,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
                                                 .addGap(33, 33, 33)
                                                 .addComponent(Modificar))
                                             .addComponent(CampoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(Grado, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(CampoDocu, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
@@ -330,9 +320,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel8)
                                     .addComponent(CampoEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)))
+                                .addGap(76, 76, 76)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(Registrar)
@@ -340,9 +328,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
                             .addComponent(Modificar)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addComponent(ConsultaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(73, 73, 73)
-                        .addComponent(Grado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(ConsultaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(138, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane2)
@@ -375,7 +361,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
         //Valida que ningun campo esté vacio
         if (CampoDocu.getText().equals("") || CampoNom.getText().equals("") 
                 || CampoApellidos.getText().equals("") || CampoTelefono.getText().equals("") 
-                || CampoEstudios.getText().equals("") || Grado.getSelectedItem().toString().equals("")) {
+                || CampoEstudios.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
 
@@ -390,25 +376,8 @@ public class frmgestionardocente extends javax.swing.JFrame {
                     int GuardarTelefono = Integer.parseInt(CampoTelefono.getText());
                     mod.setTelefono(GuardarTelefono);
                     mod.setCorreo(CampoCorreo.getText());
-                    mod.setEstudios(CampoCorreo.getText());
-                    mod.setGrado(Grado.getSelectedItem().toString());
-                    
-                    if (Grado.getSelectedItem().toString().equals("Iniciación")) {
-                        System.out.println("1");
-                        mod.setGrado(1 + "");
-                        } else if (Grado.getSelectedItem().toString().equals("Párvulos")) {
-                        System.out.println("2");
-                        mod.setGrado(2 + "");
-                        } else if (Grado.getSelectedItem().toString().equals("Prejardín")) {
-                        System.out.println("3");
-                        mod.setGrado(3 + "");
-                        } else if (Grado.getSelectedItem().toString().equals("Jardín")) {
-                        System.out.println("4");
-                        mod.setGrado(4 + "");
-                        } else if (Grado.getSelectedItem().toString().equals("Transición")) {
-                        System.out.println("5");
-                        mod.setGrado(5 + "");
-                        }
+                    mod.setEstudios(CampoEstudios.getText());
+                   
 
                     if (modSql.registrarDocente(mod)) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
@@ -484,28 +453,25 @@ public class frmgestionardocente extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getCon();
+            
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreU = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
 
-            ps = conn.prepareStatement("SELECT idDocente, NombresDocente, ApellidosDocente, TelefonoDocentes, "
-                    + "CorreoDocentes, Grado_Asignado FROM docente WHERE idDocente=?");
-            ps.setString(1, nombreU);
+            ps = Obconn.conectar().prepareStatement("SELECT documento_docente, nombre_docente, apellidos_docente, telefono_docente, "
+                    + "correodoc, estudios FROM docente WHERE documento_docente=?");
+            ps.setInt(1, Integer.parseInt(nombreU));
             rs = ps.executeQuery();
 
             while (rs.next()) {
       
-                CampoDocu.setText(rs.getString("idDocente"));
-                CampoDocu.setEditable(false);
-                CampoDocu.setEnabled(false);
-                CampoNom.setText(rs.getString("NombresDocente"));
-                CampoApellidos.setText(rs.getString("ApellidosDocente"));
-                CampoTelefono.setText(rs.getString("TelefonoDocentes"));
-                CampoCorreo.setText(rs.getString("CorreoDocentes"));
-                Grado.setSelectedItem(rs.getString("Grado_Asignado"));
-                Grado.setEditable(false);
-                Grado.setEnabled(false);
+                CampoDocu.setText(rs.getInt("documento_docente") + "");
+                CampoNom.setText(rs.getString("nombre_docente"));
+                CampoApellidos.setText(rs.getString("apellidos_docente"));
+                CampoTelefono.setText(rs.getString("telefono_docente"));
+                CampoCorreo.setText(rs.getString("correodoc"));
+                CampoEstudios.setText(rs.getString("estudios"));
+                
                 
                 
                 
@@ -526,17 +492,16 @@ public class frmgestionardocente extends javax.swing.JFrame {
             Conexion Obconn = new Conexion();
             Connection conn = Obconn.conectar();
 
-            ps = conn.prepareStatement("UPDATE docente SET  NombresDocente=?, ApellidosDocente=?, TelefonoDocentes=?,"
-                    + " CorreoDocentes=?, Grado_Asignado=? WHERE idDocente=?");
+            ps = conn.prepareStatement("UPDATE docente SET  nombre_docente=?, apellidos_docente=?, telefono_docente=?, "
+                    + "correodoc=?, estudios=? FROM docente WHERE nombre_docente=?");
 
             ps.setString(1, CampoNom.getText());
             ps.setString(2, CampoApellidos.getText());
             int CampoT = Integer.parseInt(CampoTelefono.getText());
             ps.setInt(3, CampoT);
             ps.setString(4, CampoCorreo.getText());
-            ps.setString(5, Grado.getSelectedItem().toString());
-            int CampoID = Integer.parseInt(CampoDocu.getText());
-            ps.setInt(6, CampoID);
+            ps.setString(5,CampoEstudios.getText());
+            ps.setInt(7, Integer.parseInt(CampoDocu.getText()));
 
             int res = ps.executeUpdate();
             if (res > 0) {
@@ -559,13 +524,13 @@ public class frmgestionardocente extends javax.swing.JFrame {
         try {
 
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getCon();
 
             int Fila = Tabla.getSelectedRow();
             String id = Tabla.getValueAt(Fila, 0).toString();
-
-            ps = conn.prepareStatement("DELETE FROM docente WHERE idDocente=?");
-            ps.setString(1, id);
+            int doc = Integer.parseInt(id);
+            
+            ps = Obconn.conectar().prepareStatement("DELETE FROM docente WHERE documento_docente=?;");
+            ps.setInt(1, doc);
             ps.execute();
 
             // modelo.removeRow(Fila);
@@ -592,7 +557,8 @@ public class frmgestionardocente extends javax.swing.JFrame {
         CampoApellidos.setText("");
         CampoTelefono.setText("");
         CampoCorreo.setText("");
-        Grado.setSelectedItem("");
+        CampoEstudios.setText("");
+        
     }
 
     class FondoPanel extends JPanel {
@@ -629,7 +595,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
     private javax.swing.JTextField ConsultaC;
     private javax.swing.JButton Consultar;
     private javax.swing.JButton Eliminar;
-    private javax.swing.JComboBox<String> Grado;
     private javax.swing.JButton Modificar;
     private javax.swing.JButton Registrar;
     private javax.swing.JTable Tabla;
@@ -641,7 +606,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;

@@ -22,18 +22,18 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Pablo
  */
-public class ConsultarGrados extends javax.swing.JFrame {
+public class GestionarGrados extends javax.swing.JFrame {
     FondoPanel fondo = new FondoPanel();
 
     /**
      * Creates new form GestionarGrados
      */
-    public ConsultarGrados() {
+    public GestionarGrados() {
         initComponents();
         setLocationRelativeTo(null); //abre la ventana en la mitad
         setResizable(false);
         this.setContentPane(fondo);
-        this.setTitle("Consultar Grados");
+        this.setTitle("Gestionar Grados");
         initComponents();
     }
 
@@ -54,6 +54,9 @@ public class ConsultarGrados extends javax.swing.JFrame {
         grados = new javax.swing.JComboBox<String>();
         campoG = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        Doc = new javax.swing.JTextField();
+        Cambio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,18 +78,25 @@ public class ConsultarGrados extends javax.swing.JFrame {
 
         Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Nombres"
+                "Documento", "Nombre"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -100,6 +110,7 @@ public class ConsultarGrados extends javax.swing.JFrame {
         jScrollPane1.setViewportView(Tabla);
         if (Tabla.getColumnModel().getColumnCount() > 0) {
             Tabla.getColumnModel().getColumn(0).setResizable(false);
+            Tabla.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -116,54 +127,83 @@ public class ConsultarGrados extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Grados Disponibles");
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel3.setText("Documento: ");
+
+        Doc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DocActionPerformed(evt);
+            }
+        });
+
+        Cambio.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        Cambio.setText("Cambiar Docente");
+        Cambio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CambioActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(grados, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
-                        .addComponent(ConsultarG)
-                        .addGap(30, 30, 30)
-                        .addComponent(Atras)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
+                .addComponent(jLabel3)
+                .addGap(18, 18, 18)
+                .addComponent(Doc, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(campoG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(grados, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
-                        .addComponent(jLabel2)))
+                        .addGap(187, 187, 187)
+                        .addComponent(jLabel2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(ConsultarG)
+                                .addGap(18, 18, 18)
+                                .addComponent(Cambio)
+                                .addGap(15, 15, 15)
+                                .addComponent(Atras))
+                            .addComponent(campoG, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addContainerGap()
                 .addComponent(jLabel2)
-                .addGap(42, 42, 42)
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(grados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(grados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(70, 70, 70)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ConsultarG)
-                            .addComponent(Atras)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3)
+                            .addComponent(Doc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(campoG, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ConsultarG)
+                    .addComponent(Atras)
+                    .addComponent(Cambio))
+                .addGap(26, 26, 26))
         );
 
         pack();
@@ -184,9 +224,10 @@ public class ConsultarGrados extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getCon();
+            Connection con = conn.conectar();
 
-            String sql = "SELECT n.numregistrocivil FROM niños n inner join grado s on n.grado = codigo"
+            String sql = "SELECT n.documento_docente, n.nombre_docente "
+                    + "FROM docente n inner join grado s on n.documento_docente = codigo_docente"
                     + where;
 
             System.out.println(sql);
@@ -194,11 +235,12 @@ public class ConsultarGrados extends javax.swing.JFrame {
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
-            modelo.addColumn("Nombre De Grados");
+            modelo.addColumn("Documento");
+            modelo.addColumn("Nombre");
  
 
             //Condicion para los anchos de la tableta xd
-            int[] anchos = {100};
+            int[] anchos = {100,100};
             for (int i = 0; i < Tabla.getColumnCount(); i++) {
                 Tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
@@ -229,20 +271,19 @@ public class ConsultarGrados extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getCon();
+            Connection conn = Obconn.conectar();
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreA = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
 
-            ps = conn.prepareStatement("SELECT * FROM grados where nombreGrados=?");
-            ps.setString(1, nombreA);
+            ps = conn.prepareStatement("SELECT documento_docente FROM docente where documento_docente=?");
+            ps.setInt(1, Integer.parseInt(nombreA));
             rs = ps.executeQuery();
 
             while (rs.next()) {
 
-                grados.setSelectedItem(rs.getString("nombreGrados"));
-                grados.setEditable(false);
-                grados.setEnabled(false);
+                Doc.setText(rs.getInt("documento_docente")+"");
+                
   
             }
         } catch (SQLException ex) {
@@ -253,6 +294,43 @@ public class ConsultarGrados extends javax.swing.JFrame {
     private void gradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_gradosActionPerformed
+
+    private void DocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DocActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DocActionPerformed
+
+    private void CambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambioActionPerformed
+        PreparedStatement ps = null;
+        
+        try {
+            
+            Conexion Obconn = new Conexion();
+            Connection conn = Obconn.conectar();
+            
+            ps = conn.prepareStatement("UPDATE grado SET codigo_docente=? where codigo_docente=?");
+            
+            ps.setInt(1, Integer.parseInt(Doc.getText()));
+            ps.setInt(2, Integer.parseInt(Doc.getText()));
+            
+
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "Datos de Docente Modificados Correctamente");
+                Limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Docente");
+                Limpiar();
+            }
+            conn.close();
+            
+            
+            
+        }catch (Exception e) {
+            System.err.println(e);
+        }
+    
+    
+    }//GEN-LAST:event_CambioActionPerformed
     private void Limpiar() {
         grados.setSelectedItem("");
     }
@@ -289,13 +367,13 @@ public class ConsultarGrados extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GestionarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -305,19 +383,22 @@ public class ConsultarGrados extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConsultarGrados().setVisible(true);
+                new GestionarGrados().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Atras;
+    private javax.swing.JButton Cambio;
     private javax.swing.JButton ConsultarG;
+    private javax.swing.JTextField Doc;
     private javax.swing.JTable Tabla;
     private javax.swing.JTextField campoG;
     private javax.swing.JComboBox<String> grados;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
