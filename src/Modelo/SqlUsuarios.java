@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,7 +54,6 @@ public class SqlUsuarios extends Conexion {
 
     //Validar si un usuario ya existe
     public int existeUsuario(String Usuario) {
-
         Conexion conexion = new Conexion();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
@@ -66,7 +66,7 @@ public class SqlUsuarios extends Conexion {
             pst = conexion.conectar().prepareStatement(sql);
             pst.setString(1, Usuario);
             rs = pst.executeQuery();
-
+            System.out.println("Hola GG");
             if (rs.next()) {
                 return rs.getInt(1);
             }
@@ -79,7 +79,7 @@ public class SqlUsuarios extends Conexion {
         return 1;
 
     }
-
+    
     //Validar Correo Electronico
     public boolean ValidarEmail(String correo) {
         //Patron para validar email---- indica que la cadena debe iniciar con esos caracteres--- puede llevar los siguientes

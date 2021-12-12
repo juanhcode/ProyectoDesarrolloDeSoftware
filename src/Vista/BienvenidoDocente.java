@@ -51,7 +51,6 @@ public class BienvenidoDocente extends javax.swing.JFrame {
         Salir = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         GestionarAgenda = new javax.swing.JToggleButton();
-        ConsultaActi = new javax.swing.JToggleButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -76,18 +75,10 @@ public class BienvenidoDocente extends javax.swing.JFrame {
         jLabel1.setText("Docente");
 
         GestionarAgenda.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        GestionarAgenda.setText("Gestionar Agenda");
+        GestionarAgenda.setText("Gestionar Notas");
         GestionarAgenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GestionarAgendaActionPerformed(evt);
-            }
-        });
-
-        ConsultaActi.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        ConsultaActi.setText("Consultar Actividades");
-        ConsultaActi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConsultaActiActionPerformed(evt);
             }
         });
 
@@ -112,19 +103,14 @@ public class BienvenidoDocente extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(ConsultaActi, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Salir)
                 .addGap(28, 28, 28))
             .addGroup(layout.createSequentialGroup()
+                .addGap(162, 162, 162)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(162, 162, 162)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(GestionarAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(GestionarAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addContainerGap(178, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -132,12 +118,10 @@ public class BienvenidoDocente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jLabel1)
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addComponent(GestionarAgenda)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ConsultaActi)
-                    .addComponent(Salir))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(Salir)
                 .addGap(47, 47, 47))
         );
 
@@ -153,14 +137,6 @@ public class BienvenidoDocente extends javax.swing.JFrame {
         agenda.setVisible(true);
         dispose();
     }//GEN-LAST:event_GestionarAgendaActionPerformed
-
-    private void ConsultaActiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultaActiActionPerformed
-        frmConsultarActividadesDocente actividades = new frmConsultarActividadesDocente();
-        actividades.setVisible(true);
-        dispose();
-
-        this.dispose();
-    }//GEN-LAST:event_ConsultaActiActionPerformed
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
 
@@ -225,7 +201,6 @@ public class BienvenidoDocente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton ConsultaActi;
     private javax.swing.JToggleButton GestionarAgenda;
     private javax.swing.JToggleButton Salir;
     private javax.swing.JLabel jLabel1;

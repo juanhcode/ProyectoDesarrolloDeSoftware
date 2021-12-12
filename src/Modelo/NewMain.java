@@ -16,8 +16,9 @@ public class NewMain {
      */
     public static void main(String[] args) {
         SqlUsuarios sqlU = new SqlUsuarios();
-        int cantidad = sqlU.existeUsuario("juan");
-        System.out.println("Cantidad de usuarios con el mismo nombre" + cantidad );
+        //int cantidad = sqlU.existeUsuario("juan");
+        //System.out.println("Cantidad de usuarios con el mismo nombre" + cantidad );
+        
     }
     
 }
