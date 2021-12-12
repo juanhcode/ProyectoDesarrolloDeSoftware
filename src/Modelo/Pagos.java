@@ -5,16 +5,17 @@
  */
 package Modelo;
 
+import java.util.Date;
+
 /**
  *
  * @author Pablo
  */
 public class Pagos {
     private int DocRegistroPago;
-    private String Fecha;
+    private Date Fecha;
     private int Valor;
-    private int idResponsable;
-    private int idAlumno;
+    private int Matricula_niño;
 
     public int getDocRegistroPago() {
         return DocRegistroPago;
@@ -24,11 +25,11 @@ public class Pagos {
         this.DocRegistroPago = DocRegistroPago;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return Fecha;
     }
 
-    public void setFecha(String Fecha) {
+    public void setFecha(Date Fecha) {
         this.Fecha = Fecha;
     }
 
@@ -40,20 +41,13 @@ public class Pagos {
         this.Valor = Valor;
     }
 
-    public int getIdResponsable() {
-        return idResponsable;
+
+    public int getMatricula_niño() {
+        return Matricula_niño;
     }
 
-    public void setIdResponsable(int idResponsable) {
-        this.idResponsable = idResponsable;
-    }
-
-    public int getIdAlumno() {
-        return idAlumno;
-    }
-
-    public void setIdAlumno(int idAlumno) {
-        this.idAlumno = idAlumno;
+    public void setMatricula_niño(int Matricula_niño) {
+        this.Matricula_niño = Matricula_niño;
     }
 
 

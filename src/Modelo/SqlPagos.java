@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package Modelo;
-
-import static Modelo.Conexion.getConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,19 +18,20 @@ public class SqlPagos extends Conexion {
     public boolean registrar(Pagos pago) {
 
         PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
+        Conexion conexion = new Conexion();
 
         //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO pagos (IDRegistroPago, FechaPagos, ValorPagos, idResponsable, idAlumno) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO pago_matricula (codigompk, fecha_pago, valor_pago, codigo_niño) VALUES(?,?,?,?)";
 
+        java.sql.Date dateSql= new java.sql.Date(pago.getFecha().getYear(),
+                pago.getFecha().getMonth(),pago.getFecha().getDay());
         try {
 
-            ps = con.prepareStatement(sql);
+            ps = conexion.conectar().prepareStatement(sql);
             ps.setInt(1, pago.getDocRegistroPago());
-            ps.setString(2, pago.getFecha());
+            ps.setDate(2, dateSql);
             ps.setInt(3, pago.getValor());
-            ps.setInt(4, pago.getIdResponsable());
-            ps.setInt(5, pago.getIdAlumno());
+            ps.setInt(4, pago.getMatricula_niño());
 
             ps.execute();
 
@@ -44,19 +43,17 @@ public class SqlPagos extends Conexion {
         return false;
     }
 
-    public int existePago(String pago) {
+    public int existePago(Integer pago) {
 
         PreparedStatement ps = null; //ps= sentencia preparada;
         ResultSet rs = null;
-        Connection con = getConexion();
+        Conexion conexion = new Conexion();
 
-        //cuenta el numero de registros que tiene la tabla cuando usuario
-        //sea igual al campo que agergamos
-        String sql = "SELECT count(IDRegistroPago) FROM pagos WHERE IDRegistroPago = ?";
+        
+        String sql = "SELECT count(codigompk) FROM pago_matricula WHERE codigompk = ?";
         try {
-
-            ps = con.prepareStatement(sql);
-            ps.setString(1, pago);
+            ps = conexion.conectar().prepareStatement(sql);
+            ps.setInt(1, pago);
             rs = ps.executeQuery();
 
             if (rs.next()) {
