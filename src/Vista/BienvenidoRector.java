@@ -242,7 +242,7 @@ public class BienvenidoRector extends javax.swing.JFrame {
 
     private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
         // TODO add your handling code here:
-        GestionarGrados grados=new GestionarGrados();
+        ConsultarGrados grados=new ConsultarGrados();
         grados.setVisible(true);
         dispose();
     }//GEN-LAST:event_jToggleButton5ActionPerformed

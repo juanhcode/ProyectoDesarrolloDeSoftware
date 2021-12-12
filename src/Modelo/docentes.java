@@ -2,20 +2,32 @@ package Modelo;
 
 public class docentes {
 
-    private int id;
+    private int documento;
     private String nombres;
     private String apellidos;
-    private int telefonos;
-    private String Correo;
-    private String grado;
+    private int telefono;
+    private String correo;
     private String estudios;
+    private String grado;
 
-    public int getId() {
-        return id;
+    public docentes(int documento, String nombres, String apellidos, int telefono, String correo, String estudios, String grado) {
+        this.documento = documento;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.estudios = estudios;
+        this.grado = grado;
+    }
+    
+    
+    
+    public int getDocumento() {
+        return documento;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDocumento(int documento) {
+        this.documento = documento;
     }
 
     public String getNombres() {
@@ -30,24 +42,32 @@ public class docentes {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
-        this.apellidos = apellidos;
+    public void setApellidos(String aprellidos) {
+        this.apellidos = aprellidos;
     }
 
-    public int getTelefonos() {
-        return telefonos;
+    public int getTelefono() {
+        return telefono;
     }
 
-    public void setTelefonos(int telefonos) {
-        this.telefonos = telefonos;
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
-    public void setCorreo(String Correo) {
-        this.Correo = Correo;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(String estudios) {
+        this.estudios = estudios;
     }
 
     public String getGrado() {
@@ -58,14 +78,6 @@ public class docentes {
         this.grado = grado;
     }
 
-    public String getEstudios() {
-        return estudios;
-    }
-
-    public void setEstudios(String estudios) {
-        this.estudios = estudios;
-    }
-    
     
 
 }

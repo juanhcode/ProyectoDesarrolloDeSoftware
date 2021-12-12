@@ -20,24 +20,27 @@ public class SqlGestionarDocentes extends Conexion {
     
     //Registrar Usuarios
     public boolean registrarDocente(docentes usr) {
-     
+
+        Connection conn = null;
         Conexion conexion = new Conexion();
         ResultSet rs = null;
-        PreparedStatement pst = null; //ps= sentencia preparada;
+        PreparedStatement ps = null;
         
         //Aqui se guardan los datos a la base de datos usuarios tabla gestionar_docentes.
-        String sql = "INSERT INTO docente (documento_docente,nombre_decente,numtelefonodocente,correodoc,"
-                + "estudios,grado,apellidos_docente) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO docente (documento_docente, nombres, apellidos_docente, telefono_docentes, "
+                + "correodoc, estudios, grado) VALUES(?,?,?,?,?,?,?)";
+
         try {
-            pst = conexion.conectar().prepareStatement(sql);
-            pst.setInt(1, usr.getId());
-            pst.setString(2, usr.getNombres());
-            pst.setInt(3, usr.getTelefonos());
-            pst.setString(4, usr.getCorreo());
-            pst.setString(5, usr.getEstudios());
-            pst.setString(6, usr.getGrado());
-            pst.setString(7, usr.getApellidos());
-            pst.execute();
+
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, usr.getDocumento());
+            ps.setString(2, usr.getNombres());
+            ps.setString(3, usr.getApellidos());
+            ps.setInt(4, usr.getTelefono());
+            ps.setString(5, usr.getCorreo());
+            ps.setString(6, usr.getEstudios());
+            ps.setString(7, usr.getGrado());
+            ps.execute();
 
             return true;
         } catch (Exception ex) {
@@ -49,13 +52,15 @@ public class SqlGestionarDocentes extends Conexion {
     
      public int existeDocente(String docente) {
 
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        conexion.conectar(); 
         PreparedStatement ps = null; //ps= sentencia preparada;
         ResultSet rs = null;
-        Connection con = getConexion();
 
         //cuenta el numero de registros que tiene la tabla cuando usuario
         //sea igual al campo que agergamos
-        String sql = "SELECT count(idDocente) FROM docente WHERE idDocente= ?";
+        String sql = "SELECT count(documento_docente) FROM docente WHERE documento_docente = ?";
         try {
 
             ps = con.prepareStatement(sql);

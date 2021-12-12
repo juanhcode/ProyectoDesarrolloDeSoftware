@@ -33,7 +33,7 @@ public class ConsultarGrados extends javax.swing.JFrame {
         setLocationRelativeTo(null); //abre la ventana en la mitad
         setResizable(false);
         this.setContentPane(fondo);
-        this.setTitle("Gestionar Grados");
+        this.setTitle("Consultar Grados");
         initComponents();
     }
 
@@ -106,7 +106,12 @@ public class ConsultarGrados extends javax.swing.JFrame {
         jLabel1.setText("Nombre Grados:");
 
         grados.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        grados.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Pre-Jardín", "Jardín", "Transición" }));
+        grados.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Iniciación","Párvulos","Prejardín","Jardín","Transición" }));
+        grados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gradosActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel2.setText("Grados Disponibles");
@@ -166,10 +171,10 @@ public class ConsultarGrados extends javax.swing.JFrame {
 
     private void ConsultarGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarGActionPerformed
         // TODO add your handling code here:
-        String consultaGrados = campoG.getText();
+        String consultaGrados = grados.getSelectedItem().toString();
         String where = "";
         if (!"".equals((consultaGrados))) {
-            where = "WHERE nombreGrados = '" + consultaGrados + "'";
+            where = " WHERE s.nombre = '" + consultaGrados + "';";
 
         }
         try {
@@ -179,9 +184,9 @@ public class ConsultarGrados extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
+            Connection con = conn.getCon();
 
-            String sql = "SELECT nombreGrados FROM grados;"
+            String sql = "SELECT n.numregistrocivil FROM niños n inner join grado s on n.grado = codigo"
                     + where;
 
             System.out.println(sql);
@@ -224,7 +229,7 @@ public class ConsultarGrados extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            Connection conn = Obconn.getCon();
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreA = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
@@ -244,6 +249,10 @@ public class ConsultarGrados extends javax.swing.JFrame {
             System.err.println(ex.toString());
         }
     }//GEN-LAST:event_TablaMouseClicked
+
+    private void gradosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gradosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gradosActionPerformed
     private void Limpiar() {
         grados.setSelectedItem("");
     }
@@ -288,6 +297,8 @@ public class ConsultarGrados extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ConsultarGrados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
