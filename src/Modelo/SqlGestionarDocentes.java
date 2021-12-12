@@ -5,7 +5,6 @@
  */
 package Modelo;
 
-import static Modelo.Conexion.getConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,23 +20,24 @@ public class SqlGestionarDocentes extends Conexion {
     
     //Registrar Usuarios
     public boolean registrarDocente(docentes usr) {
-
-        PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
+     
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement pst = null; //ps= sentencia preparada;
         
         //Aqui se guardan los datos a la base de datos usuarios tabla gestionar_docentes.
-        String sql = "INSERT INTO docente (idDocente, NombresDocente, ApellidosDocente, TelefonoDocentes, CorreoDocentes, Grado_Asignado) VALUES(?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO docente (documento_docente,nombre_decente,numtelefonodocente,correodoc,"
+                + "estudios,grado,apellidos_docente) VALUES(?,?,?,?,?,?,?)";
         try {
-
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, usr.getId());
-            ps.setString(2, usr.getNombres());
-            ps.setString(3, usr.getAprellidos());
-            ps.setInt(4, usr.getTelefonos());
-            ps.setString(5, usr.getCorreo());
-            ps.setString(6, usr.getGrado());
-            ps.execute();
+            pst = conexion.conectar().prepareStatement(sql);
+            pst.setInt(1, usr.getId());
+            pst.setString(2, usr.getNombres());
+            pst.setInt(3, usr.getTelefonos());
+            pst.setString(4, usr.getCorreo());
+            pst.setString(5, usr.getEstudios());
+            pst.setString(6, usr.getGrado());
+            pst.setString(7, usr.getApellidos());
+            pst.execute();
 
             return true;
         } catch (Exception ex) {

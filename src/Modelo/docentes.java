@@ -4,10 +4,11 @@ public class docentes {
 
     private int id;
     private String nombres;
-    private String aprellidos;
+    private String apellidos;
     private int telefonos;
     private String Correo;
     private String grado;
+    private String estudios;
 
     public int getId() {
         return id;
@@ -25,12 +26,12 @@ public class docentes {
         this.nombres = nombres;
     }
 
-    public String getAprellidos() {
-        return aprellidos;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setAprellidos(String aprellidos) {
-        this.aprellidos = aprellidos;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public int getTelefonos() {
@@ -56,5 +57,15 @@ public class docentes {
     public void setGrado(String grado) {
         this.grado = grado;
     }
+
+    public String getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(String estudios) {
+        this.estudios = estudios;
+    }
+    
+    
 
 }
