@@ -2,19 +2,32 @@ package Modelo;
 
 public class docentes {
 
-    private int id;
+    private int documento;
     private String nombres;
-    private String aprellidos;
-    private int telefonos;
-    private String Correo;
+    private String apellidos;
+    private int telefono;
+    private String correo;
+    private String estudios;
     private String grado;
 
-    public int getId() {
-        return id;
+    public docentes(int documento, String nombres, String apellidos, int telefono, String correo, String estudios, String grado) {
+        this.documento = documento;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.estudios = estudios;
+        this.grado = grado;
+    }
+    
+    
+    
+    public int getDocumento() {
+        return documento;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDocumento(int documento) {
+        this.documento = documento;
     }
 
     public String getNombres() {
@@ -25,28 +38,36 @@ public class docentes {
         this.nombres = nombres;
     }
 
-    public String getAprellidos() {
-        return aprellidos;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setAprellidos(String aprellidos) {
-        this.aprellidos = aprellidos;
+    public void setApellidos(String aprellidos) {
+        this.apellidos = aprellidos;
     }
 
-    public int getTelefonos() {
-        return telefonos;
+    public int getTelefono() {
+        return telefono;
     }
 
-    public void setTelefonos(int telefonos) {
-        this.telefonos = telefonos;
+    public void setTelefono(int telefono) {
+        this.telefono = telefono;
     }
 
     public String getCorreo() {
-        return Correo;
+        return correo;
     }
 
-    public void setCorreo(String Correo) {
-        this.Correo = Correo;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(String estudios) {
+        this.estudios = estudios;
     }
 
     public String getGrado() {
@@ -56,5 +77,7 @@ public class docentes {
     public void setGrado(String grado) {
         this.grado = grado;
     }
+
+    
 
 }

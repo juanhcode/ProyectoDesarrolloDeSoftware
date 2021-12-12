@@ -6,7 +6,6 @@
 package Vista;
 
 import Modelo.Conexion;
-import static Modelo.Conexion.getConexion;
 import Modelo.SqlGestionarDocentes;
 import Modelo.docentes;
 import Modelo.usuarios;
@@ -83,19 +82,19 @@ public class frmgestionardocente extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton5 = new javax.swing.JButton();
-        camponombres = new javax.swing.JTextField();
+        CampoNom = new javax.swing.JTextField();
         Registrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        campoapellidos = new javax.swing.JTextField();
+        CampoApellidos = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        campotelefono = new javax.swing.JTextField();
+        CampoTelefono = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        campocorreo = new javax.swing.JTextField();
+        CampoCorreo = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        campoid = new javax.swing.JTextField();
+        CampoDocu = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         Consultar = new javax.swing.JButton();
         Modificar = new javax.swing.JButton();
@@ -103,7 +102,9 @@ public class frmgestionardocente extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
         ConsultaC = new javax.swing.JTextField();
-        Grado = new javax.swing.JComboBox<>();
+        Grado = new javax.swing.JComboBox<String>();
+        jLabel8 = new javax.swing.JLabel();
+        CampoEstudios = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -113,9 +114,9 @@ public class frmgestionardocente extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        camponombres.addActionListener(new java.awt.event.ActionListener() {
+        CampoNom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                camponombresActionPerformed(evt);
+                CampoNomActionPerformed(evt);
             }
         });
 
@@ -131,19 +132,19 @@ public class frmgestionardocente extends javax.swing.JFrame {
         jLabel1.setText("CRUD Docente");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("ID:");
+        jLabel2.setText("Documento:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setText("Nombres:");
 
-        campocorreo.addActionListener(new java.awt.event.ActionListener() {
+        CampoCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campocorreoActionPerformed(evt);
+                CampoCorreoActionPerformed(evt);
             }
         });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Apellidos");
+        jLabel4.setText("Apellidos:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Telefono:");
@@ -194,7 +195,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombres", "Apellidos", "Telefono", "Correo", "Grado"
+                "Documento", "Nombres", "Apellidos", "Telefono", "Correo", "Estudios"
             }
         ) {
             Class[] types = new Class [] {
@@ -220,7 +221,10 @@ public class frmgestionardocente extends javax.swing.JFrame {
         jScrollPane2.setViewportView(Tabla);
 
         Grado.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        Grado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pre-Jardín", "Jardín", "Transición" }));
+        Grado.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Iniciación","Párvulos","Prejardín","Jardín","Transición" }));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setText("Estudios:");
 
         jMenu3.setText("Archivo");
 
@@ -243,36 +247,34 @@ public class frmgestionardocente extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(59, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jButton1)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(64, 64, 64)
-                                            .addComponent(campoid, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(campoapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(camponombres, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(campotelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGap(33, 33, 33)
-                                                    .addComponent(Modificar))
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                    .addComponent(Grado, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(campocorreo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                     .addComponent(jLabel5)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel6))
+                                    .addComponent(jLabel6)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel8))
+                                        .addGap(80, 80, 80)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(CampoEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(CampoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(CampoNom, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(CampoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(33, 33, 33)
+                                                .addComponent(Modificar))
+                                            .addComponent(CampoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(Grado, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(CampoDocu, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -284,8 +286,12 @@ public class frmgestionardocente extends javax.swing.JFrame {
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(48, 48, 48)
                                         .addComponent(ConsultaC, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 605, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -293,37 +299,40 @@ public class frmgestionardocente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addGap(37, 37, 37)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(campoid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(CampoDocu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(camponombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6)
+                    .addComponent(CampoNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(campoapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CampoApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(campotelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CampoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(campocorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CampoCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(Consultar)
                                 .addGap(85, 85, 85))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(21, 21, 21)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel8)
+                                    .addComponent(CampoEstudios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGap(26, 26, 26)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(Registrar)
@@ -332,7 +341,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(ConsultaC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
+                        .addGap(73, 73, 73)
                         .addComponent(Grado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(138, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
@@ -343,13 +352,13 @@ public class frmgestionardocente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void camponombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_camponombresActionPerformed
+    private void CampoNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoNomActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_camponombresActionPerformed
+    }//GEN-LAST:event_CampoNomActionPerformed
 
-    private void campocorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campocorreoActionPerformed
+    private void CampoCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoCorreoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_campocorreoActionPerformed
+    }//GEN-LAST:event_CampoCorreoActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         GestionDocentes GestionD = new GestionDocentes();
@@ -364,23 +373,42 @@ public class frmgestionardocente extends javax.swing.JFrame {
         docentes mod = new docentes();
 
         //Valida que ningun campo esté vacio
-        if (campoid.getText().equals("") || camponombres.getText().equals("") || campoapellidos.getText().equals("")
-                || campotelefono.getText().equals("") || Grado.getSelectedItem().toString().equals("")) {
+        if (CampoDocu.getText().equals("") || CampoNom.getText().equals("") 
+                || CampoApellidos.getText().equals("") || CampoTelefono.getText().equals("") 
+                || CampoEstudios.getText().equals("") || Grado.getSelectedItem().toString().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
 
-            if (modSql.existeDocente(campoid.getText()) == 0) //usuario no existe
+            if (modSql.existeDocente(CampoDocu.getText()) == 0) //usuario no existe
             {
-                if (modSql.ValidarEmail2(campocorreo.getText())) {
+                if (modSql.ValidarEmail2(CampoCorreo.getText())) {
 
-                    int GuardarId = Integer.parseInt(campoid.getText());
-                    mod.setId(GuardarId);
-                    mod.setNombres(camponombres.getText());
-                    mod.setAprellidos(campoapellidos.getText());
-                    int GuardarTelefono = Integer.parseInt(campotelefono.getText());
-                    mod.setTelefonos(GuardarTelefono);
-                    mod.setCorreo(campocorreo.getText());
+                    int GuardarId = Integer.parseInt(CampoDocu.getText());
+                    mod.setDocumento(GuardarId);
+                    mod.setNombres(CampoNom.getText());
+                    mod.setApellidos(CampoApellidos.getText());
+                    int GuardarTelefono = Integer.parseInt(CampoTelefono.getText());
+                    mod.setTelefono(GuardarTelefono);
+                    mod.setCorreo(CampoCorreo.getText());
+                    mod.setEstudios(CampoCorreo.getText());
                     mod.setGrado(Grado.getSelectedItem().toString());
+                    
+                    if (Grado.getSelectedItem().toString().equals("Iniciación")) {
+                        System.out.println("1");
+                        mod.setGrado(1 + "");
+                        } else if (Grado.getSelectedItem().toString().equals("Párvulos")) {
+                        System.out.println("2");
+                        mod.setGrado(2 + "");
+                        } else if (Grado.getSelectedItem().toString().equals("Prejardín")) {
+                        System.out.println("3");
+                        mod.setGrado(3 + "");
+                        } else if (Grado.getSelectedItem().toString().equals("Jardín")) {
+                        System.out.println("4");
+                        mod.setGrado(4 + "");
+                        } else if (Grado.getSelectedItem().toString().equals("Transición")) {
+                        System.out.println("5");
+                        mod.setGrado(5 + "");
+                        }
 
                     if (modSql.registrarDocente(mod)) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
@@ -391,7 +419,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "El Correo Electronico No Es Valido");
                 }
-
+                
             } else {
                 JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
             }
@@ -405,7 +433,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
         String consultaC = ConsultaC.getText();
         String where = "";
         if (!"".equals((consultaC))) {
-            where = "WHERE idDocente = '" + consultaC + "'";
+            where = "WHERE documento_docente = '" + consultaC + "'";
 
         }
         try {
@@ -415,21 +443,21 @@ public class frmgestionardocente extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            Connection con = conn.getConexion();
 
-            String sql = "SELECT idDocente, NombresDocente, ApellidosDocente, TelefonoDocentes, CorreoDocentes, Grado_Asignado FROM docente " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes 
+            String sql = "SELECT documento_docente,nombre_docente,apellidos_docente,telefono_docente,correodoc,estudios FROM docente " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes 
                     + where;
             System.out.println(sql);
-            ps = con.prepareStatement(sql);
+            ps = conn.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
-            modelo.addColumn("ID");
+            modelo.addColumn("Documento");
             modelo.addColumn("Nombres");
             modelo.addColumn("Apellidos");
             modelo.addColumn("Telefono");
             modelo.addColumn("Correo");
-            modelo.addColumn("Grado");
+            modelo.addColumn("Estudios");
+            
             //Condicion para los anchos de la tableta xd 
             int[] anchos = {20, 50, 50, 50, 150, 100};
             for (int i = 0; i < Tabla.getColumnCount(); i++) {
@@ -456,7 +484,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            Connection conn = Obconn.getCon();
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreU = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
@@ -468,13 +496,13 @@ public class frmgestionardocente extends javax.swing.JFrame {
 
             while (rs.next()) {
       
-                campoid.setText(rs.getString("idDocente"));
-                campoid.setEditable(false);
-                campoid.setEnabled(false);
-                camponombres.setText(rs.getString("NombresDocente"));
-                campoapellidos.setText(rs.getString("ApellidosDocente"));
-                campotelefono.setText(rs.getString("TelefonoDocentes"));
-                campocorreo.setText(rs.getString("CorreoDocentes"));
+                CampoDocu.setText(rs.getString("idDocente"));
+                CampoDocu.setEditable(false);
+                CampoDocu.setEnabled(false);
+                CampoNom.setText(rs.getString("NombresDocente"));
+                CampoApellidos.setText(rs.getString("ApellidosDocente"));
+                CampoTelefono.setText(rs.getString("TelefonoDocentes"));
+                CampoCorreo.setText(rs.getString("CorreoDocentes"));
                 Grado.setSelectedItem(rs.getString("Grado_Asignado"));
                 Grado.setEditable(false);
                 Grado.setEnabled(false);
@@ -491,23 +519,23 @@ public class frmgestionardocente extends javax.swing.JFrame {
 
     private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
 
-        Connection con = null;
         PreparedStatement ps = null;
 
         try {
 
-            con = getConexion();
+            Conexion Obconn = new Conexion();
+            Connection conn = Obconn.conectar();
 
-            ps = con.prepareStatement("UPDATE docente SET  NombresDocente=?, ApellidosDocente=?, TelefonoDocentes=?,"
+            ps = conn.prepareStatement("UPDATE docente SET  NombresDocente=?, ApellidosDocente=?, TelefonoDocentes=?,"
                     + " CorreoDocentes=?, Grado_Asignado=? WHERE idDocente=?");
 
-            ps.setString(1, camponombres.getText());
-            ps.setString(2, campoapellidos.getText());
-            int CampoT = Integer.parseInt(campotelefono.getText());
+            ps.setString(1, CampoNom.getText());
+            ps.setString(2, CampoApellidos.getText());
+            int CampoT = Integer.parseInt(CampoTelefono.getText());
             ps.setInt(3, CampoT);
-            ps.setString(4, campocorreo.getText());
+            ps.setString(4, CampoCorreo.getText());
             ps.setString(5, Grado.getSelectedItem().toString());
-            int CampoID = Integer.parseInt(campoid.getText());
+            int CampoID = Integer.parseInt(CampoDocu.getText());
             ps.setInt(6, CampoID);
 
             int res = ps.executeUpdate();
@@ -518,7 +546,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Docente");
                 limpiar();
             }
-            con.close();
+            conn.close();
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -531,7 +559,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
         try {
 
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.getConexion();
+            Connection conn = Obconn.getCon();
 
             int Fila = Tabla.getSelectedRow();
             String id = Tabla.getValueAt(Fila, 0).toString();
@@ -559,11 +587,11 @@ public class frmgestionardocente extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void limpiar() {
-        campoid.setText("");
-        camponombres.setText("");
-        campoapellidos.setText("");
-        campotelefono.setText("");
-        campocorreo.setText("");
+        CampoDocu.setText("");
+        CampoNom.setText("");
+        CampoApellidos.setText("");
+        CampoTelefono.setText("");
+        CampoCorreo.setText("");
         Grado.setSelectedItem("");
     }
 
@@ -592,6 +620,12 @@ public class frmgestionardocente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField CampoApellidos;
+    private javax.swing.JTextField CampoCorreo;
+    private javax.swing.JTextField CampoDocu;
+    private javax.swing.JTextField CampoEstudios;
+    private javax.swing.JTextField CampoNom;
+    private javax.swing.JTextField CampoTelefono;
     private javax.swing.JTextField ConsultaC;
     private javax.swing.JButton Consultar;
     private javax.swing.JButton Eliminar;
@@ -599,11 +633,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
     private javax.swing.JButton Modificar;
     private javax.swing.JButton Registrar;
     private javax.swing.JTable Tabla;
-    private javax.swing.JTextField campoapellidos;
-    private javax.swing.JTextField campocorreo;
-    private javax.swing.JTextField campoid;
-    private javax.swing.JTextField camponombres;
-    private javax.swing.JTextField campotelefono;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
@@ -613,6 +642,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar2;

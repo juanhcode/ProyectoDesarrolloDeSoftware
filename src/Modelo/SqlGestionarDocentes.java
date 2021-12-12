@@ -5,7 +5,6 @@
  */
 package Modelo;
 
-import static Modelo.Conexion.getConexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,21 +21,25 @@ public class SqlGestionarDocentes extends Conexion {
     //Registrar Usuarios
     public boolean registrarDocente(docentes usr) {
 
-        PreparedStatement ps = null; //ps= sentencia preparada;
-        Connection con = getConexion();
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement ps = null;
         
         //Aqui se guardan los datos a la base de datos usuarios tabla gestionar_docentes.
-        String sql = "INSERT INTO docente (idDocente, NombresDocente, ApellidosDocente, TelefonoDocentes, CorreoDocentes, Grado_Asignado) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO docente (documento_docente, nombres, apellidos_docente, telefono_docentes, "
+                + "correodoc, estudios, grado) VALUES(?,?,?,?,?,?,?)";
 
         try {
 
             ps = con.prepareStatement(sql);
-            ps.setInt(1, usr.getId());
+            ps.setInt(1, usr.getDocumento());
             ps.setString(2, usr.getNombres());
-            ps.setString(3, usr.getAprellidos());
-            ps.setInt(4, usr.getTelefonos());
+            ps.setString(3, usr.getApellidos());
+            ps.setInt(4, usr.getTelefono());
             ps.setString(5, usr.getCorreo());
-            ps.setString(6, usr.getGrado());
+            ps.setString(6, usr.getEstudios());
+            ps.setString(7, usr.getGrado());
             ps.execute();
 
             return true;
@@ -49,13 +52,15 @@ public class SqlGestionarDocentes extends Conexion {
     
      public int existeDocente(String docente) {
 
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        conexion.conectar(); 
         PreparedStatement ps = null; //ps= sentencia preparada;
         ResultSet rs = null;
-        Connection con = getConexion();
 
         //cuenta el numero de registros que tiene la tabla cuando usuario
         //sea igual al campo que agergamos
-        String sql = "SELECT count(idDocente) FROM docente WHERE idDocente= ?";
+        String sql = "SELECT count(documento_docente) FROM docente WHERE documento_docente = ?";
         try {
 
             ps = con.prepareStatement(sql);
