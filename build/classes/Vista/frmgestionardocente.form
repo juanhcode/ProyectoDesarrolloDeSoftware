@@ -70,10 +70,9 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel7" alignment="0" min="-2" pref="69" max="-2" attributes="0"/>
                                           <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="CampoEstudios" min="-2" pref="128" max="-2" attributes="0"/>
                                           <Component id="CampoApellidos" min="-2" pref="128" max="-2" attributes="0"/>
@@ -84,7 +83,6 @@
                                               <Component id="Modificar" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Component id="CampoCorreo" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
-                                          <Component id="Grado" alignment="0" min="-2" pref="128" max="-2" attributes="0"/>
                                           <Component id="CampoDocu" alignment="0" min="-2" pref="129" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
@@ -162,9 +160,7 @@
                                   <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="CampoEstudios" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel7" min="-2" pref="44" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -177,8 +173,6 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                       <Component id="ConsultaC" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-                      <Component id="Grado" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="138" max="32767" attributes="0"/>
@@ -262,14 +256,6 @@
           <Font name="Tahoma" size="14" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Correo:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel7">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="14" style="1"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="&lt;html&gt; Grado Asignado: &lt;/html&gt;"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="CampoDocu">
@@ -382,19 +368,6 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="ConsultaC">
-    </Component>
-    <Component class="javax.swing.JComboBox" name="Grado">
-      <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Tahoma" size="10" style="1"/>
-        </Property>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &quot;Iniciaci&#xf3;n&quot;,&quot;P&#xe1;rvulos&quot;,&quot;Prejard&#xed;n&quot;,&quot;Jard&#xed;n&quot;,&quot;Transici&#xf3;n&quot; })" type="code"/>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
