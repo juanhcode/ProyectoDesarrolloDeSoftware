@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Pablo
  */
 public class niños {
-
+    
     private int matricula;
     private String nombres;
     private String sexo;
@@ -37,8 +37,6 @@ public class niños {
 
     public niños() {
     }
-    
-    
     
     
     public String getTipoDeSangre() {

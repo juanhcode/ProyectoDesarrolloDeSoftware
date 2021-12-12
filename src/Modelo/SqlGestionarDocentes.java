@@ -81,10 +81,6 @@ public class SqlGestionarDocentes extends Conexion {
     }
      
      
-     
-     
-
-     
       //Validar Correo Electronico
     public boolean ValidarEmail2(String correo) {
         //Patron para validar email---- indica que la cadena debe iniciar con esos caracteres--- puede llevar los siguientes
