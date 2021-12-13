@@ -210,14 +210,12 @@ public class RegistroDocentesSistema extends javax.swing.JFrame {
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
 
-        String id = txtID.getText();
-        String usuario = txtUsuario.getText();
         String pass = new String(txtPassword.getPassword());
         String Conpass = new String(txtConfirmarPassword.getPassword());
-        String nombre = txtUsuario.getText();
-        String correo = txtCorreo.getText();
-        SqlUsuarios usuarioSql = new SqlUsuarios();
+        
+        SqlUsuarios modSql  = new SqlUsuarios();
         usuarios mod = new usuarios();
+        
         if (txtID.getText().equals("") || txtUsuario.getText().equals("")
                 || pass.equals("") || Conpass.equals("") || txtNombre.getText().equals("")
                 || txtCorreo.getText().equals("")) {
@@ -225,26 +223,33 @@ public class RegistroDocentesSistema extends javax.swing.JFrame {
         } else {
             if (pass.equals(Conpass)) {
                 System.out.println("Son iguales");
-                if (usuarioSql.existeUsuario(txtUsuario.getText()) == 0) //usuario no existe
+                if (modSql .existeUsuario(txtUsuario.getText()) == 0) //usuario no existe
                 {
-                    if (usuarioSql.ValidarEmail(txtCorreo.getText())) {
-                        int GuardarId = Integer.parseInt(txtID.getText());
-                        mod.setId(GuardarId);
-                        mod.setUsuario(txtUsuario.getText());
-                        mod.setPassword(pass);
-                        mod.setNombre(txtNombre.getText());
-                        mod.setCorreo(txtCorreo.getText());
-                        mod.setId_tipo(2);
-                        TimeZone.setDefault(TimeZone.getTimeZone("America/Bogota"));
-                        SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        Date date = new Date();
-                        String fecha = date_format.format(date);
-                        if (usuarioSql.registrar(mod, fecha)) {
-                            JOptionPane.showMessageDialog(null, "Registro Guardado");
-                            Limpiar();
+                    if (modSql .ValidarEmail(txtCorreo.getText())) {
+
+                        if (modSql.existeDocente(Integer.parseInt(txtID.getText())) == 1) {
+                            
+                            int GuardarId = Integer.parseInt(txtID.getText());
+                            mod.setId(GuardarId);
+                            mod.setUsuario(txtUsuario.getText());
+                            mod.setPassword(pass);
+                            mod.setNombre(txtNombre.getText());
+                            mod.setCorreo(txtCorreo.getText());
+                            mod.setId_tipo(2);
+                            TimeZone.setDefault(TimeZone.getTimeZone("America/Bogota"));
+                            SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            Date date = new Date();
+                            String fecha = date_format.format(date);
+                            if (modSql .registrar(mod, fecha)) {
+                                JOptionPane.showMessageDialog(null, "Registro Guardado");
+                                Limpiar();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                            JOptionPane.showMessageDialog(null, "No existe docente en el sistema");
                         }
+
                     } else {
                         JOptionPane.showMessageDialog(null, "El Correo Electronico No Es Valido");
                     }

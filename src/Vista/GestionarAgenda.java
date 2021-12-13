@@ -389,8 +389,8 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
     private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
         // TODO add your handling code here:
-        BienvenidoRector consul = new BienvenidoRector();
-        consul.setVisible(true);
+        BienvenidoRector rector = new BienvenidoRector();
+        rector.setVisible(true);
         dispose();
     }//GEN-LAST:event_AtrasActionPerformed
 

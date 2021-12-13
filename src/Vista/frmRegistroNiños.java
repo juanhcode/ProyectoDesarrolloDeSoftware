@@ -426,11 +426,16 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                 int ConvertirIDPadre = Integer.parseInt(campoResponsable.getText());
                 mod.setIdResponsable(ConvertirIDPadre);
                 mod.setTipoDeSangre(TipoSangre.getSelectedItem().toString());
-                if (modSql.registrar(mod, mod.getRegistroCivil())) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
-                    // Limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                try {
+                    System.out.println("Codigo responsable" + campoResponsable.getText());
+                    if (modSql.registrar(mod,Integer.parseInt(campoResponsable.getText()))) {
+                        JOptionPane.showMessageDialog(null, "Registro Guardado");
+                        // Limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {
@@ -569,7 +574,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
             Conexion conn = new Conexion();
 
             String sql = "SELECT n.num_matricula,n.nombre,n.numregistrocivil,n.fecha_nacimiento,n.fecha_ingreso,"
-                    + "g.nombre,n.tpsangre,n.sexo,s.codigo_responsable FROM niños n inner join se_relaciona  s on n.num_matricula = s.num_matricula_niño inner join grado g on n.grado = g.codigo" // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
+                    + "g.nombre,n.tpsangre,n.sexo,s.codigo_responsable FROM niños n inner join se_relaciona  s on n.num_matricula = s.num_matricula_niño inner join grado g on n.grado = g.codigo"
                     + where;
 
             System.out.println(sql);

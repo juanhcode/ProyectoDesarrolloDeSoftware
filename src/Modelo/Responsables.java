@@ -17,7 +17,6 @@ public class Responsables {
     private int telefono;
     private String parentesco;
     private int id_usuario;
-    String variable;
 
     public int getId() {
         return id;
