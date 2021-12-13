@@ -432,7 +432,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
             ps.execute();
 
             // modelo.removeRow(Fila);
-            JOptionPane.showMessageDialog(null, "Docente Eliminado");
+            JOptionPane.showMessageDialog(null, "Usuario Eliminado");
             limpiar();
 
         } catch (SQLException ex) {
