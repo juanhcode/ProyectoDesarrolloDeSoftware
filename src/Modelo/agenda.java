@@ -13,28 +13,31 @@ import java.util.Date;
  */
 public class agenda {
 
-    private int id;
-    private int matriculaNinio;
+    private int Codigo;
     private String Nota;
     private String Descripcion;
     private Date Fecha;
-    private int grado;
- 
+    private int Niño;
+    private int Grado;
 
-    public int getId() {
-        return id;
+    public agenda(int Codigo, String Nota, String Descripcion, Date Fecha, int Niño, int Grado) {
+        this.Codigo = Codigo;
+        this.Nota = Nota;
+        this.Descripcion = Descripcion;
+        this.Fecha = Fecha;
+        this.Niño = Niño;
+        this.Grado = Grado;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public agenda() {
     }
 
-    public int getMatriculaNinio() {
-        return matriculaNinio;
+    public int getCodigo() {
+        return Codigo;
     }
 
-    public void setMatriculaNinio(int matriculaNinio) {
-        this.matriculaNinio = matriculaNinio;
+    public void setCodigo(int Codigo) {
+        this.Codigo = Codigo;
     }
 
     public String getNota() {
@@ -53,19 +56,30 @@ public class agenda {
         this.Descripcion = Descripcion;
     }
 
-    public Date getFecha(){
+    public Date getFecha() {
         return Fecha;
     }
 
     public void setFecha(Date Fecha) {
         this.Fecha = Fecha;
     }
-    
-     public int getGrado() {
-        return grado;
+
+    public int getNiño() {
+        return Niño;
     }
 
-    public void setGrado(int grado) {
-        this.grado = grado;
+    public void setNiño(int Niño) {
+        this.Niño = Niño;
     }
+
+    public int getGrado() {
+        return Grado;
+    }
+
+    public void setGrado(int Grado) {
+        this.Grado = Grado;
+    }
+ 
+
+    
 }

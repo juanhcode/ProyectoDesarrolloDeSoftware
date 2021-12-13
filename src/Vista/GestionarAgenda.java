@@ -25,6 +25,7 @@ import java.awt.HeadlessException;
 import java.awt.Image;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -72,7 +73,7 @@ public class GestionarAgenda extends javax.swing.JFrame {
         Registrar = new javax.swing.JButton();
         Modificar = new javax.swing.JButton();
         campoA = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        EliminarA = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -82,10 +83,9 @@ public class GestionarAgenda extends javax.swing.JFrame {
         campoMatriculaN = new javax.swing.JTextField();
         campoNOTA = new javax.swing.JTextField();
         campoFecha = new javax.swing.JTextField();
-        campoGrado = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         campoDescripcion = new javax.swing.JTextField();
+        CampoGrado = new javax.swing.JComboBox<String>();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -119,11 +119,11 @@ public class GestionarAgenda extends javax.swing.JFrame {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "Id Agenda", "matriculaNiño", "Nota", "Fecha", "Grado", "Descripcion"
+                "Codigo Agenda", "Nota", "Descripcion", "Fecha", "Niño", "Grado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -168,11 +168,11 @@ public class GestionarAgenda extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jButton1.setText("Eliminar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        EliminarA.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        EliminarA.setText("Eliminar");
+        EliminarA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                EliminarAActionPerformed(evt);
             }
         });
 
@@ -191,20 +191,17 @@ public class GestionarAgenda extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel6.setText("Grado:");
 
+        campoCodigoA.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                campoCodigoAActionPerformed(evt);
+            }
+        });
+
         campoMatriculaN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoMatriculaNActionPerformed(evt);
             }
         });
-
-        campoGrado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoGradoActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        jLabel7.setText("Grado");
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel8.setText("Descricpcion:");
@@ -212,6 +209,14 @@ public class GestionarAgenda extends javax.swing.JFrame {
         campoDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoDescripcionActionPerformed(evt);
+            }
+        });
+
+        CampoGrado.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+        CampoGrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"Iniciación","Párvulos","Prejardín","Jardín","Transición"}));
+        CampoGrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CampoGradoActionPerformed(evt);
             }
         });
 
@@ -238,24 +243,6 @@ public class GestionarAgenda extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Registrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(Reporte)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(Atras))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(campoA, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(Modificar)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(ConsulAgenda))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -267,30 +254,41 @@ public class GestionarAgenda extends javax.swing.JFrame {
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(campoDescripcion)
-                                .addGap(9, 9, 9))
-                            .addComponent(campoFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
-                            .addComponent(campoGrado)
-                            .addComponent(campoCodigoA, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoFecha)
                             .addComponent(campoMatriculaN, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(campoNOTA, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addGap(78, 78, 78)))
+                            .addComponent(campoNOTA, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(campoDescripcion)
+                            .addComponent(CampoGrado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(campoCodigoA, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(63, 63, 63))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Registrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(EliminarA, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Reporte)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(Atras))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(campoA, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(Modificar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ConsulAgenda))))))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(214, 214, 214)
-                .addComponent(jLabel7)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7)
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(campoA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -313,22 +311,21 @@ public class GestionarAgenda extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(campoGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(CampoGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(campoDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Registrar)
                             .addComponent(Modificar)
-                            .addComponent(ConsulAgenda))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(Reporte)
-                            .addComponent(Atras)
-                            .addComponent(jButton1)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(ConsulAgenda))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Reporte)
+                    .addComponent(Atras)
+                    .addComponent(EliminarA))
                 .addContainerGap())
         );
 
@@ -339,8 +336,8 @@ public class GestionarAgenda extends javax.swing.JFrame {
         // TODO add your handling code here:
         String consultaAgenda = campoA.getText();
         String where = "";
-        if (!"".equals((campoA))) {
-            where = "WHERE ID_Docente_Encargado = '" + consultaAgenda + "'";
+        if (!"".equals((consultaAgenda))) {
+            where = "WHERE niño = " + consultaAgenda + "";
 
         }
         try {
@@ -349,26 +346,26 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
             PreparedStatement ps = null;
             ResultSet rs = null;
-            Conexion con = new Conexion();
-            //Connection con = conn.getConexion();
+            Conexion conn = new Conexion();
 
-            String sql = "SELECT idAgenda, Alumno_idAlumno, notaAgenda, Responsable_idResponsable, ID_Docente_Encargado"
-                    + " FROM agenda "
+            String sql = "SELECT n.codigo, n.nota, n.descripcion, n.fecha, n.niño, s.nombre "
+                    + "FROM agenda n inner join grado s on n.grado = s.codigo "
                     + where;
 
             System.out.println(sql);
-            //ps = con.prepareStatement(sql);
+            ps = conn.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
-            modelo.addColumn("Id Agenda");
-            modelo.addColumn("DOC Alumno");
+            modelo.addColumn("Codigo Agenda");
             modelo.addColumn("Nota");
-            modelo.addColumn("DOC Responsable");
-            modelo.addColumn("DOC Docente");
+            modelo.addColumn("Descripcion");
+            modelo.addColumn("Fecha");
+            modelo.addColumn("Matricula Niño");
+            modelo.addColumn("Grado");
 
             //Condicion para los anchos de la tableta xd
-            int[] anchos = {20, 80, 50, 80, 80};
+            int[] anchos = {90, 50, 60, 80, 70, 90};
             for (int i = 0; i < TablaAgenda.getColumnCount(); i++) {
                 TablaAgenda.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
@@ -425,7 +422,7 @@ public class GestionarAgenda extends javax.swing.JFrame {
                 //Connection con = conn.getConexion();
 
                 String sql = "SELECT * FROM agenda"
-                      +where;
+                        + where;
 
                 System.out.println(sql);
                 //ps = con.prepareStatement(sql);
@@ -461,29 +458,47 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
         //Valida que ningun campo esté vacio
         if (campoCodigoA.getText().equals("") || campoMatriculaN.getText().equals("") || campoNOTA.getText().equals("")
-                || campoFecha.getText().equals("") || campoGrado.getText().equals("")) {
+                || campoFecha.getText().equals("") || CampoGrado.getSelectedItem().toString().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
 
-            //if (modSql.existePago(campoMatriculaN.getText()) == 0) //usuario no existe
             {
 
                 int GuardarId = Integer.parseInt(campoCodigoA.getText());
-                mod.setId(GuardarId);
+                mod.setCodigo(GuardarId);
 
                 int GuardarMatricula = Integer.parseInt(campoMatriculaN.getText());
-                mod.setMatriculaNinio(GuardarMatricula);
-                
+                mod.setNiño(GuardarMatricula);
+
                 mod.setNota(campoNOTA.getText());
-                
-                int GuardarGrado = Integer.parseInt(campoGrado.getText());
-                mod.setGrado(GuardarGrado);
-                
-                mod.setDescripcion(campoDescripcion.getText());
-                
                 try {
-                Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(campoFecha.getText());
-                mod.setFecha(date1);
+                    Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(campoFecha.getText());
+                    mod.setFecha(date1);
+                } catch (ParseException ex) {
+                    Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (CampoGrado.getSelectedItem().toString().equals("Iniciación")) {
+                    System.out.println("1");
+                    mod.setGrado(1);
+                } else if (CampoGrado.getSelectedItem().toString().equals("Párvulos")) {
+                    System.out.println("2");
+                    mod.setGrado(2);
+                } else if (CampoGrado.getSelectedItem().toString().equals("Prejardín")) {
+                    System.out.println("3");
+                    mod.setGrado(3);
+                } else if (CampoGrado.getSelectedItem().toString().equals("Jardín")) {
+                    System.out.println("4");
+                    mod.setGrado(4);
+                } else if (CampoGrado.getSelectedItem().toString().equals("Transición")) {
+                    System.out.println("5");
+                    mod.setGrado(5);
+                }
+
+                mod.setDescripcion(campoDescripcion.getText());
+
+                try {
+                    Date date1 = new SimpleDateFormat("yyyy/MM/dd").parse(campoFecha.getText());
+                    mod.setFecha(date1);
                 } catch (ParseException ex) {
                     Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -495,15 +510,33 @@ public class GestionarAgenda extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
                 }
 
-            //} else {
-                JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
             }
 
         }    }//GEN-LAST:event_RegistrarActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void EliminarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarAActionPerformed
+        PreparedStatement ps = null;
+        try {
+
+            Conexion Obconn = new Conexion();
+
+            int Fila = TablaAgenda.getSelectedRow();
+            String id = TablaAgenda.getValueAt(Fila, 0).toString();
+            int doc = Integer.parseInt(id);
+
+            ps = Obconn.conectar().prepareStatement("DELETE FROM agenda WHERE codigo=?");
+            ps.setInt(1, doc);
+            ps.execute();
+
+            // modelo.removeRow(Fila);
+            JOptionPane.showMessageDialog(null, "Agenda Eliminada");
+            limpiar();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al Eliminar Agenda");
+            System.out.println(ex.toString());
+        }
+    }//GEN-LAST:event_EliminarAActionPerformed
 
     private void campoMatriculaNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoMatriculaNActionPerformed
         // TODO add your handling code here:
@@ -515,31 +548,30 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            //Connection conn = Obconn.getConexion();
 
             int Fila = TablaAgenda.getSelectedRow(); //nos trae la fila seleccionada
             String nombreA = TablaAgenda.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
-            /*
-            ps = conn.prepareStatement("SELECT idAgenda, Alumno_idAlumno, notaAgenda, Responsable_idResponsable, "
-                    + "ID_Docente_Encargado FROM agenda WHERE idAgenda=?");
-            ps.setString(1, nombreA);
+
+            ps = Obconn.conectar().prepareStatement("SELECT codigo, nota, descripcion, fecha, "
+                    + "niño, grado FROM agenda WHERE codigo=?");
+            ps.setInt(1, Integer.parseInt(nombreA));
             rs = ps.executeQuery();
-            */
+
             while (rs.next()) {
 
-                campoCodigoA.setText(rs.getString("idAgenda"));
+                campoCodigoA.setText(rs.getInt("codigo") + "");
                 campoCodigoA.setEditable(false);
                 campoCodigoA.setEnabled(false);
-                campoMatriculaN.setText(rs.getString("Alumno_idAlumno"));
-                campoMatriculaN.setEditable(false);
-                campoMatriculaN.setEnabled(false);
-                campoNOTA.setText(rs.getString("notaAgenda"));
-                campoFecha.setText(rs.getString("Responsable_idResponsable"));
-                campoFecha.setEditable(false);
-                campoFecha.setEnabled(false);
-                campoGrado.setText(rs.getString("ID_Docente_Encargado"));
-                campoGrado.setEditable(false);
-                campoGrado.setEnabled(false);
+                campoNOTA.setText(rs.getString("nota"));
+                campoDescripcion.setText(rs.getString("descripcion"));
+                Date date = rs.getDate("fecha");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+                String strDate = dateFormat.format(date);
+                campoFecha.setText(strDate);
+                campoMatriculaN.setText(rs.getInt("niño") + "");
+                CampoGrado.setSelectedItem(rs.getInt("grado"));
+                CampoGrado.setEditable(false);
+                CampoGrado.setEnabled(false);
 
             }
         } catch (SQLException ex) {
@@ -548,24 +580,78 @@ public class GestionarAgenda extends javax.swing.JFrame {
     }//GEN-LAST:event_TablaAgendaMouseClicked
 
     private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
-        // TODO add your handling code here:
+        Conexion conexion = new Conexion();
+        Connection con = null;
+        PreparedStatement ps = null;
+        
+        try {
+            ps = conexion.conectar().prepareStatement("UPDATE agenda SET nota=?,"
+                    + "descripcion=?,fecha=?, niño=?, grado=? WHERE codigo=?");
+
+            ps.setString(1, campoNOTA.getText());
+            ps.setString(2, campoDescripcion.getText());
+            java.util.Date dateUtil=new java.util.Date(campoFecha.getText());                                                
+            java.sql.Date dateSql= new java.sql.Date(dateUtil.getYear(),dateUtil.getMonth(),dateUtil.getDay());
+            ps.setDate(3, dateSql);
+            int ConvertirID = Integer.parseInt(campoMatriculaN.getText());
+            ps.setInt(4, ConvertirID);
+            if(CampoGrado.getSelectedItem().toString().equals("Iniciación")){
+                ps.setInt(5, 1);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Párvulos")){
+                ps.setInt(5, 2);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Prejardín")){
+                ps.setInt(5, 3);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Jardín")){
+                ps.setInt(5, 4);
+            }else if(CampoGrado.getSelectedItem().toString().equals("Transición")){
+                ps.setInt(5, 5);
+            }
+            ps.setInt(6, Integer.parseInt(campoCodigoA.getText()));
+            
+            
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                JOptionPane.showMessageDialog(null, "Datos Del Usuario Modificados Correctamente");
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Usuario");
+                limpiar();
+            }
+            conexion.conectar().close();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }//GEN-LAST:event_ModificarActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
 
-        JOptionPane.showMessageDialog(null, "Hasta Luego Docente");
+        JOptionPane.showMessageDialog(null, "Hasta Luego");
         InicioSesion inicio = new InicioSesion();
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void campoGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoGradoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoGradoActionPerformed
-
     private void campoDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoDescripcionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoDescripcionActionPerformed
+
+    private void CampoGradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoGradoActionPerformed
+
+    }//GEN-LAST:event_CampoGradoActionPerformed
+
+    private void campoCodigoAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoCodigoAActionPerformed
+      
+    }//GEN-LAST:event_campoCodigoAActionPerformed
+    private void limpiar() {
+        campoCodigoA.setText("");
+        campoNOTA.setText("");
+        campoDescripcion.setText("");
+        campoFecha.setText("");
+        campoMatriculaN.setText("");
+        CampoGrado.setSelectedItem("");
+
+    }
+
     class FondoPanel extends JPanel {
 
         private Image imagen;
@@ -618,7 +704,9 @@ public class GestionarAgenda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Atras;
+    private javax.swing.JComboBox<String> CampoGrado;
     private javax.swing.JButton ConsulAgenda;
+    private javax.swing.JButton EliminarA;
     private javax.swing.JButton Modificar;
     private javax.swing.JButton Registrar;
     private javax.swing.JButton Reporte;
@@ -627,17 +715,14 @@ public class GestionarAgenda extends javax.swing.JFrame {
     private javax.swing.JTextField campoCodigoA;
     private javax.swing.JTextField campoDescripcion;
     private javax.swing.JTextField campoFecha;
-    private javax.swing.JTextField campoGrado;
     private javax.swing.JTextField campoMatriculaN;
     private javax.swing.JTextField campoNOTA;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
