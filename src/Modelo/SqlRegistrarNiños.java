@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Modelo;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,26 +16,24 @@ import java.sql.SQLException;
  */
 public class SqlRegistrarNiños extends Conexion {
 
-    public boolean registrar(niños Niño,int registroCivil) {    
+    public boolean registrar(niños Niño, int responsable) throws SQLException {
         Connection conn = null;
         Conexion conexion = new Conexion();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
-        
-        //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
-        String sql = "INSERT INTO niños (nombre,numregistrocivil,"
-                + "tpsangre,sexo,fecha_nacimiento,fecha_ingreso,grado) VALUES(?,?,?,?,?,?,?)";
-        
-        String sql2 = "INSERT INTO se_relaciona (codigo_responsable,num_matricula_niño) VALUES(?,?)";
-        java.sql.Date dateSql= new java.sql.Date(Niño.getFechaNacimiento().getYear(),
-                Niño.getFechaNacimiento().getMonth(),Niño.getFechaNacimiento().getDay());
-
-        java.sql.Date dateSql2= new java.sql.Date(Niño.getFechaIngreso().getYear(),
-                Niño.getFechaIngreso().getMonth(),Niño.getFechaIngreso().getDay());
-        int matricula;
-        try {
-            
+        System.out.println("El responsable es:" + responsable);
+        if (existeResponsable(responsable)) {
+            //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
+            String sql = "INSERT INTO niños (nombre,numregistrocivil,"
+                    + "tpsangre,sexo,fecha_nacimiento,fecha_ingreso,grado) VALUES(?,?,?,?,?,?,?)";
             //SQL1
+            String sql2 = "INSERT INTO se_relaciona (codigo_responsable,num_matricula_niño) VALUES(?,?)";
+            java.sql.Date dateSql = new java.sql.Date(Niño.getFechaNacimiento().getYear(),
+                    Niño.getFechaNacimiento().getMonth(), Niño.getFechaNacimiento().getDay());
+
+            java.sql.Date dateSql2 = new java.sql.Date(Niño.getFechaIngreso().getYear(),
+                    Niño.getFechaIngreso().getMonth(), Niño.getFechaIngreso().getDay());
+
             pst = conexion.conectar().prepareStatement(sql);
             pst.setString(1, Niño.getNombres());
             pst.setInt(2, Niño.getRegistroCivil());
@@ -44,24 +43,23 @@ public class SqlRegistrarNiños extends Conexion {
             pst.setDate(6, dateSql2);
             pst.setInt(7, Integer.parseInt(Niño.getGrado()));
             pst.execute();
-            
+
             //SQL3
-            String sql3 = "SELECT num_matricula FROM niños WHERE numregistrocivil = '" + registroCivil + "'"; //UNICO
+            int matricula;
+            String sql3 = "SELECT num_matricula FROM niños WHERE numregistrocivil = '" + Niño.getRegistroCivil() + "'"; //UNICO
             pst = conexion.conectar().prepareStatement(sql3);
             rs = pst.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 matricula = rs.getInt("num_matricula");
                 pst = conexion.conectar().prepareStatement(sql2);
-                pst.setInt(1, Niño.getIdResponsable());
+                pst.setInt(1, responsable);
                 pst.setInt(2, matricula);
                 pst.execute();
             }
             return true;
-        } catch (Exception ex) {
-            System.out.println(ex);
-
+        }else{
+            return  false;
         }
-        return false;
     }
 
     public int existeNiño(String Niño) {
@@ -88,6 +86,23 @@ public class SqlRegistrarNiños extends Conexion {
         }
         return 1;
 
+    }
+
+    public boolean existeResponsable(int responsable) throws SQLException {
+        Connection conn = null;
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement pst = null; //ps= sentencia preparada;
+        String sql3 = "SELECT codigo_responsable FROM se_relaciona WHERE codigo_responsable = '" + responsable + "'";
+        pst = conexion.conectar().prepareStatement(sql3);
+        rs = pst.executeQuery();
+        if (rs.next()) {
+            System.out.println("Si existe un responsable");
+            return true;
+        } else {
+            System.out.println("No existe un responsable");
+            return false;
+        }
     }
 
 }

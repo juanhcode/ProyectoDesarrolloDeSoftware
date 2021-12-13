@@ -426,11 +426,16 @@ public class frmRegistroNiños extends javax.swing.JFrame {
                 int ConvertirIDPadre = Integer.parseInt(campoResponsable.getText());
                 mod.setIdResponsable(ConvertirIDPadre);
                 mod.setTipoDeSangre(TipoSangre.getSelectedItem().toString());
-                if (modSql.registrar(mod, mod.getRegistroCivil())) {
-                    JOptionPane.showMessageDialog(null, "Registro Guardado");
-                    // Limpiar();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                try {
+                    System.out.println("Codigo responsable" + campoResponsable.getText());
+                    if (modSql.registrar(mod,Integer.parseInt(campoResponsable.getText()))) {
+                        JOptionPane.showMessageDialog(null, "Registro Guardado");
+                        // Limpiar();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmRegistroNiños.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             } else {

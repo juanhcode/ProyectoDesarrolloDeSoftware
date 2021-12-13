@@ -75,17 +75,17 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
 
         Tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo Usuario", "Usuario", "Contraseña", "Nombre", "Correo", "Tipo De Usuario"
+                "Codigo", "Nombre", "Contraseña", "Usuario", "Nick", "Correo", "Fecha"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -104,7 +104,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
             Tabla.getColumnModel().getColumn(2).setResizable(false);
             Tabla.getColumnModel().getColumn(3).setResizable(false);
             Tabla.getColumnModel().getColumn(4).setResizable(false);
-            Tabla.getColumnModel().getColumn(5).setResizable(false);
+            Tabla.getColumnModel().getColumn(6).setResizable(false);
         }
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -234,16 +234,13 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                         .addComponent(botonModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3)))
+                .addGap(17, 17, 17)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jButton4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 780, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,7 +249,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(72, 72, 72)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -278,7 +275,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
                         .addComponent(ConsultaU, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -296,33 +293,33 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         String consultau = ConsultaU.getText();
         String where = "";
         if (!"".equals((consultau))) {
-           where = "WHERE id_Usuario = '" + consultau + "'";
+           where = "WHERE codigo = '" + consultau + "'";
 
         }
         try { 
             DefaultTableModel modelo = new DefaultTableModel();
             Tabla.setModel(modelo);
-
+            
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
             //Connection con = conn.getConexion();
 
-            String sql = "SELECT id_Usuario, usuario, contraseña, nombre, correo, Tipo_Usuario_id_tipo  FROM usuarios " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
+            String sql = "SELECT codigo,nombre,contraseña,idtipousuario,usuario_nickname,correo_electronico,last_session FROM usuario" // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
                     +where;
-            System.out.println(sql);
-            //ps = con.prepareStatement(sql);
+            ps = conn.conectar().prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
-            modelo.addColumn("Codigo(DOC)");
-            modelo.addColumn("Usuario");
-            modelo.addColumn("Contraseña");
+            modelo.addColumn("Codigo");
             modelo.addColumn("Nombre");
+            modelo.addColumn("Contraseña");
+            modelo.addColumn("Usuario");
+            modelo.addColumn("Nick");
             modelo.addColumn("Correo");
-            modelo.addColumn("Tipo De Usuario");
+            modelo.addColumn("Fecha");
             //Condicion para los anchos de la tableta xd
-            int[] anchos = {120, 85, 85, 85, 150, 120};
+            int[] anchos = {118, 85,100, 85, 90,120,120};
             for (int i = 0; i < Tabla.getColumnCount(); i++) {
                 Tabla.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
             }
@@ -341,24 +338,19 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_botonConsultarActionPerformed
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
-          Connection con = null;
+        Conexion conexion = new Conexion();
         PreparedStatement ps = null;
-
+        
         try {
-
-            //con = getConexion();
-
-            ps = con.prepareStatement("UPDATE usuarios SET  usuario=?, contraseña=?, nombre=?, correo=?,"
-                    + " Tipo_Usuario_id_tipo WHERE id_Usuario=?");
+            ps = conexion.conectar().prepareStatement("UPDATE usuario SET usuario_nickname,correo_electronico,"
+                    + "contraseña=?, nombre=? WHERE id_Usuario=?");
 
             ps.setString(1, campoUsuario.getText());
-            ps.setString(2, campoContraseña.getText());
-            ps.setString(3, campoNombre.getText());
-            ps.setString(4, campoCorreo.getText());
-            ps.setString(5, Tipo.getSelectedItem().toString());
+            ps.setString(2, campoCorreo.getText());
+            ps.setString(3, campoContraseña.getText());
+            ps.setString(4, campoNombre.getText());
             int ConvertirID = Integer.parseInt(campoCodigo.getText());
-            ps.setInt(6, ConvertirID);
-
+            ps.setInt(5, ConvertirID);
             int res = ps.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Datos Del Usuario Modificados Correctamente");
@@ -367,7 +359,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Usuario");
                 limpiar();
             }
-            con.close();
+            conexion.conectar().close();
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -389,36 +381,26 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
     private void TablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaMouseClicked
         PreparedStatement ps = null;
         ResultSet rs = null;
-
+        
         try {
             Conexion Obconn = new Conexion();
-            //Connection conn = Obconn.getConexion();
-
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreU = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
-            /*
-            ps = conn.prepareStatement("SELECT id_Usuario, usuario, contraseña, nombre, "
-                    + "correo, Tipo_Usuario_id_tipo FROM usuarios WHERE id_Usuario=?");
-            */
-            ps.setString(1, nombreU);
+            ps = Obconn.conectar().prepareStatement("SELECT codigo,nombre,contraseña"
+                    + ",idtipousuario,usuario_nickname,correo_electronico,last_session FROM usuario WHERE codigo=?");
+            ps.setInt(1, Integer.parseInt(nombreU));
             rs = ps.executeQuery();
-
-            while (rs.next()) {
-      
-                campoCodigo.setText(rs.getString("id_Usuario"));
+            while (rs.next()) {   
+                campoCodigo.setText(rs.getString("codigo"));
                 campoCodigo.setEditable(false);
                 campoCodigo.setEnabled(false);
-                campoUsuario.setText(rs.getString("usuario"));
-                campoContraseña.setText(rs.getString("contraseña"));
                 campoNombre.setText(rs.getString("nombre"));
-                campoCorreo.setText(rs.getString("correo"));
-                Tipo.setSelectedItem(rs.getString("Tipo_Usuario_id_tipo"));
+                campoContraseña.setText(rs.getString("contraseña"));
+                Tipo.setSelectedItem(rs.getString("idtipousuario"));
+                campoUsuario.setText(rs.getString("usuario_nickname"));
+                campoCorreo.setText(rs.getString("correo_electronico"));       
                 Tipo.setEditable(false);
-                Tipo.setEnabled(false);                  
-                
-                
-          
-               
+                Tipo.setEnabled(false);                      
             }
         } catch (SQLException ex) {
             System.err.println(ex.toString());
