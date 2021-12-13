@@ -5,12 +5,27 @@
  */
 package Vista;
 
+import Modelo.Conexion;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Font;
 import java.awt.Graphics;
+import java.awt.HeadlessException;
 import java.awt.Image;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 
 
 /**
@@ -18,12 +33,14 @@ import javax.swing.JPanel;
  * @author Usuario
  */
 public class BienvenidoRector extends javax.swing.JFrame {
- FondoPanel fondo = new FondoPanel();    
- /**
+
+    FondoPanel fondo = new FondoPanel();
+
+    /**
      * Creates new form frmbienvenido
      */
     public BienvenidoRector() {
-         initComponents();
+        initComponents();
         setLocationRelativeTo(null); //abre la ventana en la mitad
         setResizable(false);
         this.setContentPane(fondo);
@@ -42,7 +59,7 @@ public class BienvenidoRector extends javax.swing.JFrame {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<String>();
+        jComboBox1 = new javax.swing.JComboBox<>();
         jRadioButton1 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -53,6 +70,7 @@ public class BienvenidoRector extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jToggleButton7 = new javax.swing.JToggleButton();
         GestionUsuarios = new javax.swing.JToggleButton();
+        jButton2 = new javax.swing.JButton();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -62,7 +80,7 @@ public class BienvenidoRector extends javax.swing.JFrame {
 
         jLabel3.setText("jLabel3");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -120,6 +138,13 @@ public class BienvenidoRector extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Generar PDF");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         jMenu3.setText("Archivo");
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
@@ -147,7 +172,10 @@ public class BienvenidoRector extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jToggleButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -182,7 +210,8 @@ public class BienvenidoRector extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jToggleButton5)
-                    .addComponent(jToggleButton3))
+                    .addComponent(jToggleButton3)
+                    .addComponent(jButton2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jToggleButton7)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -203,14 +232,14 @@ public class BienvenidoRector extends javax.swing.JFrame {
 
     private void jToggleButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton3ActionPerformed
         // TODO add your handling code here:
-        GestionDocentes docentes=new GestionDocentes();
+        GestionDocentes docentes = new GestionDocentes();
         docentes.setVisible(true);
         dispose();
     }//GEN-LAST:event_jToggleButton3ActionPerformed
 
     private void jToggleButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton5ActionPerformed
         // TODO add your handling code here:
-        GestionarGrados grados=new GestionarGrados();
+        GestionarGrados grados = new GestionarGrados();
         grados.setVisible(true);
         dispose();
     }//GEN-LAST:event_jToggleButton5ActionPerformed
@@ -241,7 +270,52 @@ public class BienvenidoRector extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-class FondoPanel extends JPanel {
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+
+        //Generar PDF
+        Document documento = new Document();
+        try {
+            String ruta = System.getProperty("user.home");
+            PdfWriter.getInstance(documento, new FileOutputStream(ruta + "/Desktop/reporte.pdf"));
+            documento.open();
+
+            PdfPTable tabla = new PdfPTable(7);
+            tabla.addCell("Codigo");
+            tabla.addCell("Nota");
+            tabla.addCell("Descripcion");
+            tabla.addCell("Fecha");
+            tabla.addCell("Matricula");
+            tabla.addCell("Nombre"); //Niño
+            tabla.addCell("Grado");
+            try {
+                String sql = "select a.codigo, a.nota, a.descripcion, a.fecha, a.niño as matriculaNiño, n.nombre, g.nombre\n"
+                        + "from agenda a inner join niños n on a.niño = n.num_matricula inner join grado g on a.grado = g.codigo";
+                Conexion conexion = new Conexion();
+                PreparedStatement pst = conexion.conectar().prepareStatement(sql);
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    while (rs.next()) {
+                        tabla.addCell(rs.getString(1));
+                        tabla.addCell(rs.getString(2));
+                        tabla.addCell(rs.getString(3));
+                        tabla.addCell(rs.getString(4));
+                        tabla.addCell(rs.getString(5));
+                        tabla.addCell(rs.getString(6));
+                        tabla.addCell(rs.getString(7));
+                    }
+                    documento.add(tabla);
+                }
+            } catch (DocumentException | SQLException e) {
+
+            }
+            documento.close();
+            JOptionPane.showMessageDialog(null, "El reporte fue creado");
+        } catch (DocumentException | HeadlessException | FileNotFoundException e) {
+
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    class FondoPanel extends JPanel {
 
         private Image imagen;
 
@@ -258,11 +332,12 @@ class FondoPanel extends JPanel {
     /**
      * @param args the command line arguments
      */
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton GestionUsuarios;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
