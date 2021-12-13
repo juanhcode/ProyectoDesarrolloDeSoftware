@@ -80,6 +80,36 @@ public class SqlUsuarios extends Conexion {
 
     }
     
+    public int existePadre(int Usuario) {
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement pst = null; //ps= sentencia preparada;
+
+        //cuenta el numero de registros que tiene la tabla cuando usuario
+        //sea igual al campo que agregamos
+        String sql = "select count(codigo) from usuario where codigo=?  and exists(select documento_res from responsables)";
+        try {
+
+            pst = conexion.conectar().prepareStatement(sql);
+            pst.setInt(1, Usuario);
+            rs = pst.executeQuery();
+            System.out.println("Hola GG");
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+        return 1;
+
+    }
+    
+    
+    
     //Validar Correo Electronico
     public boolean ValidarEmail(String correo) {
         //Patron para validar email---- indica que la cadena debe iniciar con esos caracteres--- puede llevar los siguientes

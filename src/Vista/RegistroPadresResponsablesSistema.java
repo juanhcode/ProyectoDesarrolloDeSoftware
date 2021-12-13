@@ -5,7 +5,6 @@
  */
 package Vista;
 
-
 import Modelo.SqlUsuarios;
 import Modelo.usuarios;
 import java.awt.Graphics;
@@ -22,7 +21,9 @@ import javax.swing.JPanel;
  * @author Pablo
  */
 public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
+
     FondoPanel fondo = new FondoPanel();
+
     /**
      * Creates new form frmRegistrarPadreResponsable
      */
@@ -225,7 +226,7 @@ public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
         String Conpass = new String(txtConfirmarPassword.getPassword());
 
         //Valida que ningun campo esté vacio
-        if (txtResponsable.getText().equals("") ||txtUsuario.getText().equals("") || pass.equals("") || Conpass.equals("") || txtNombre.getText().equals("")
+        if (txtResponsable.getText().equals("") || txtUsuario.getText().equals("") || pass.equals("") || Conpass.equals("") || txtNombre.getText().equals("")
                 || txtCorreo.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
@@ -235,26 +236,35 @@ public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
                 if (modSql.existeUsuario(txtUsuario.getText()) == 0) //usuario no existe
                 {
                     if (modSql.ValidarEmail(txtCorreo.getText())) {
+                        
+                        int GuardarcampoRes = Integer.parseInt(txtResponsable.getText());
+                        String sql = "select count(documento_res) from responsables r inner join usuario u on r.documento_res = u.codigo where documento_res = '"+GuardarcampoRes+"'  ";
+                        
+                        if (modSql.existePadre(Integer.parseInt(txtResponsable.getText())) == 1) {
 
-                        //  if(txtUsuario.getText().equals ("Rector")  ) {
-                        int GuardarId = Integer.parseInt(txtResponsable.getText());
-                        mod.setId(GuardarId);
-                        mod.setUsuario(txtUsuario.getText());
-                        mod.setPassword(pass);
-                        mod.setNombre(txtNombre.getText());
-                        mod.setCorreo(txtCorreo.getText());
-                        mod.setId_tipo(3);
-                        TimeZone.setDefault(TimeZone.getTimeZone("America/Bogota"));
-                        SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        Date date = new Date();
-                        String fecha = date_format.format(date);
-                        if (modSql.registrar(mod, fecha)) {
-                            JOptionPane.showMessageDialog(null, "Registro Guardado");
-                            Limpiar();
+                            //  if(txtUsuario.getText().equals ("Rector")  ) {
+                            int GuardarId = Integer.parseInt(txtResponsable.getText());
+                            mod.setId(GuardarId);
+                            mod.setUsuario(txtUsuario.getText());
+                            mod.setPassword(pass);
+                            mod.setNombre(txtNombre.getText());
+                            mod.setCorreo(txtCorreo.getText());
+                            mod.setId_tipo(3);
+                            TimeZone.setDefault(TimeZone.getTimeZone("America/Bogota"));
+                            SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            Date date = new Date();
+                            String fecha = date_format.format(date);
+                            if (modSql.registrar(mod, fecha)) {
+                                JOptionPane.showMessageDialog(null, "Registro Guardado");
+                                Limpiar();
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                                Limpiar();
+                            }
                         } else {
-                            JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
-                            Limpiar();
+                            JOptionPane.showMessageDialog(null, "Padre no registrado en la BD");
                         }
+
                     } else {
                         JOptionPane.showMessageDialog(null, "El Correo Electronico No Es Valido");
                     }
@@ -263,7 +273,6 @@ public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
                     Limpiar();
                 }
-                
 
             } else {
                 JOptionPane.showMessageDialog(null, "Las Contraseñas No Coinciden");
@@ -295,8 +304,8 @@ public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
         txtNombre.setText("");
         txtCorreo.setText("");
     }
-    
-     class FondoPanel extends JPanel {
+
+    class FondoPanel extends JPanel {
 
         private Image imagen;
 

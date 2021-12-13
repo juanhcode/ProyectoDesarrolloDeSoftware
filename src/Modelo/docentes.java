@@ -10,14 +10,17 @@ public class docentes {
     private String estudios;
     private String grado;
 
-    public docentes(int documento, String nombres, String apellidos, int telefono, String correo, String estudios, String grado) {
+    public docentes(int documento, String nombres, String apellidos, int telefono, String correo, String estudios) {
         this.documento = documento;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.correo = correo;
         this.estudios = estudios;
-        this.grado = grado;
+    }
+
+    public docentes() {
+      
     }
     
     
