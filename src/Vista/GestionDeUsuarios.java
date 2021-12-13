@@ -342,24 +342,19 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
     }//GEN-LAST:event_botonConsultarActionPerformed
 
     private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
-          Connection con = null;
+        Conexion conexion = new Conexion();
         PreparedStatement ps = null;
-
+        
         try {
-
-            //con = getConexion();
-
-            ps = con.prepareStatement("UPDATE usuarios SET  usuario=?, contraseña=?, nombre=?, correo=?,"
-                    + " Tipo_Usuario_id_tipo WHERE id_Usuario=?");
+            ps = conexion.conectar().prepareStatement("UPDATE usuario SET usuario_nickname=?,correo_electronico=?,"
+                    + "contraseña=?,nombre=? WHERE codigo=?");
 
             ps.setString(1, campoUsuario.getText());
-            ps.setString(2, campoContraseña.getText());
-            ps.setString(3, campoNombre.getText());
-            ps.setString(4, campoCorreo.getText());
-            ps.setString(5, Tipo.getSelectedItem().toString());
+            ps.setString(2, campoCorreo.getText());
+            ps.setString(3, campoContraseña.getText());
+            ps.setString(4, campoNombre.getText());
             int ConvertirID = Integer.parseInt(campoCodigo.getText());
-            ps.setInt(6, ConvertirID);
-
+            ps.setInt(5, ConvertirID);
             int res = ps.executeUpdate();
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Datos Del Usuario Modificados Correctamente");
@@ -368,7 +363,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Usuario");
                 limpiar();
             }
-            con.close();
+            conexion.conectar().close();
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -390,32 +385,26 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
     private void TablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaMouseClicked
         PreparedStatement ps = null;
         ResultSet rs = null;
-
+        
         try {
             Conexion Obconn = new Conexion();
-            Connection conn = Obconn.conectar();
-
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreU = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
-            
-            ps = conn.prepareStatement("SELECT codigo, usuario_nickname, nombre, contraseña, "
-                    + "idtipousuario, correo_electronico  FROM usuario");
+            ps = Obconn.conectar().prepareStatement("SELECT codigo,nombre,contraseña"
+                    + ",idtipousuario,usuario_nickname,correo_electronico,last_session FROM usuario WHERE codigo=?");
             ps.setInt(1, Integer.parseInt(nombreU));
             rs = ps.executeQuery();
-
-            while (rs.next()) {
-      
-                campoCodigo.setText(rs.getInt("codigo") + "");
-                campoUsuario.setText(rs.getString("usuario_nickname"));
+            while (rs.next()) {   
+                campoCodigo.setText(rs.getString("codigo"));
+                campoCodigo.setEditable(false);
+                campoCodigo.setEnabled(false);
                 campoNombre.setText(rs.getString("nombre"));
                 campoContraseña.setText(rs.getString("contraseña"));
                 Tipo.setSelectedItem(rs.getString("idtipousuario"));
-                campoCorreo.setText(rs.getString("correo_electronico"));
-                                 
-                
-                
-          
-               
+                campoUsuario.setText(rs.getString("usuario_nickname"));
+                campoCorreo.setText(rs.getString("correo_electronico"));       
+                Tipo.setEditable(false);
+                Tipo.setEnabled(false);
             }
         } catch (SQLException ex) {
             System.err.println(ex.toString());
