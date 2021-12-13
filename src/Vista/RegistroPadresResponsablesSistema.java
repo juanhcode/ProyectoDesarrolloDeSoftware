@@ -236,11 +236,8 @@ public class RegistroPadresResponsablesSistema extends javax.swing.JFrame {
                 if (modSql.existeUsuario(txtUsuario.getText()) == 0) //usuario no existe
                 {
                     if (modSql.ValidarEmail(txtCorreo.getText())) {
-                        
-                        int GuardarcampoRes = Integer.parseInt(txtResponsable.getText());
-                        String sql = "select count(documento_res) from responsables r inner join usuario u on r.documento_res = u.codigo where documento_res = '"+GuardarcampoRes+"'  ";
-                        
-                        if (modSql.existePadre(Integer.parseInt(txtResponsable.getText())) == 1) {
+                         
+                        if (modSql.existeResponsable(Integer.parseInt(txtResponsable.getText())) == 1) {
 
                             //  if(txtUsuario.getText().equals ("Rector")  ) {
                             int GuardarId = Integer.parseInt(txtResponsable.getText());

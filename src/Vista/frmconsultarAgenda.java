@@ -8,7 +8,6 @@ package Vista;
 import Modelo.Conexion;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -23,19 +22,20 @@ import javax.swing.table.DefaultTableModel;
  * @author Usuario
  */
 public class frmconsultarAgenda extends javax.swing.JFrame {
-        FondoPanel fondo = new FondoPanel();
+
+    FondoPanel fondo = new FondoPanel();
 
     /**
      * Creates new form frmconsultarnota
      */
     public frmconsultarAgenda() {
-         initComponents();
+        initComponents();
         setLocationRelativeTo(null); //abre la ventana en la mitad
         setResizable(false);
         this.setContentPane(fondo);
         this.setTitle("Consultar Agenda");
         initComponents();
-        
+
     }
 
     /**
@@ -87,7 +87,7 @@ public class frmconsultarAgenda extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Id Alumno", "Nota", "Id Responsable"
+                "Num_matricula", "Nota", "Documento Responsable"
             }
         ) {
             Class[] types = new Class [] {
@@ -138,11 +138,9 @@ public class frmconsultarAgenda extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ConsultaA, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(ConsultaA, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(ConsulAgenda))
-                        .addGap(226, 226, 226)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(Atras)
                         .addGap(13, 13, 13)))
                 .addContainerGap())
@@ -180,52 +178,47 @@ public class frmconsultarAgenda extends javax.swing.JFrame {
 
     private void ConsulAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsulAgendaActionPerformed
 
-    String consultaAgenda = ConsultaA.getText();
+        String consultaAgenda = ConsultaA.getText();
         String where = "";
-        if (!"".equals((ConsultaA))) {
-           where = "WHERE Alumno_idAlumno = '" + consultaAgenda + "'";
+        if (!"".equals((consultaAgenda))) {
+            String sql = "SELECT a.niño, a.nota, s.codigo_responsable FROM agenda a inner join se_relaciona s on a.niño = s.num_matricula_niño where niño = '" + consultaAgenda + "'";
 
-        }
-        try {
-            DefaultTableModel modelo = new DefaultTableModel();
-            TablaAgenda.setModel(modelo);
+            try {
+                DefaultTableModel modelo = new DefaultTableModel();
+                TablaAgenda.setModel(modelo);
 
-            PreparedStatement ps = null;
-            ResultSet rs = null;
-            Conexion conn = new Conexion();
-            Connection con = conn.getCon();
+                PreparedStatement ps = null;
+                ResultSet rs = null;
+                Conexion conn = new Conexion();
 
-            String sql = "SELECT num_matricula, notaAgenda, Responsable_idResponsable FROM agenda " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
-                    +where;
-            System.out.println(sql);
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            ResultSetMetaData rsMD = rs.getMetaData();
-            int cantidadColumnas = rsMD.getColumnCount();
+                System.out.println(sql);
+                ps = conn.conectar().prepareStatement(sql);
+                rs = ps.executeQuery();
+                ResultSetMetaData rsMD = rs.getMetaData();
+                int cantidadColumnas = rsMD.getColumnCount();
 
-           
-            modelo.addColumn("ID Alumno");
-            modelo.addColumn("Nota");
-            modelo.addColumn("ID Responsable");
-            
-            //Condicion para los anchos de la tableta xd
-            int[] anchos = {50, 50, 50, 50};
-            for (int i = 0; i < TablaAgenda.getColumnCount(); i++) {
-                TablaAgenda.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
-            }
+                modelo.addColumn("Num__matricula");
+                modelo.addColumn("Nota");
+                modelo.addColumn("Documento responsable");
 
-            while (rs.next()) {
-                Object[] filas = new Object[cantidadColumnas];
-                for (int i = 0; i < cantidadColumnas; i++) {
-                    filas[i] = rs.getObject(i + 1);
+                //Condicion para los anchos de la tableta xd
+                int[] anchos = {50, 50, 50};
+                for (int i = 0; i < TablaAgenda.getColumnCount(); i++) {
+                    TablaAgenda.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
                 }
-                modelo.addRow(filas);
-            }
 
-        } catch (SQLException ex) {
-            System.err.println(ex.toString());
+                while (rs.next()) {
+                    Object[] filas = new Object[cantidadColumnas];
+                    for (int i = 0; i < cantidadColumnas; i++) {
+                        filas[i] = rs.getObject(i + 1);
+                    }
+                    modelo.addRow(filas);
+                }
+
+            } catch (SQLException ex) {
+                System.err.println(ex.toString());
+            }
         }
-        
     }//GEN-LAST:event_ConsulAgendaActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -235,7 +228,7 @@ public class frmconsultarAgenda extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-     class FondoPanel extends JPanel {
+    class FondoPanel extends JPanel {
 
         private Image imagen;
 

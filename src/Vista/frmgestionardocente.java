@@ -466,16 +466,13 @@ public class frmgestionardocente extends javax.swing.JFrame {
             while (rs.next()) {
       
                 CampoDocu.setText(rs.getInt("documento_docente") + "");
+                CampoDocu.setEditable(false);
+                CampoDocu.setEnabled(false);
                 CampoNom.setText(rs.getString("nombre_docente"));
                 CampoApellidos.setText(rs.getString("apellidos_docente"));
                 CampoTelefono.setText(rs.getString("telefono_docente"));
                 CampoCorreo.setText(rs.getString("correodoc"));
                 CampoEstudios.setText(rs.getString("estudios"));
-                
-                
-                
-                
-          
                
             }
         } catch (SQLException ex) {
@@ -493,7 +490,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
             Connection conn = Obconn.conectar();
 
             ps = conn.prepareStatement("UPDATE docente SET  nombre_docente=?, apellidos_docente=?, telefono_docente=?, "
-                    + "correodoc=?, estudios=? FROM docente WHERE nombre_docente=?");
+                    + "correodoc=?, estudios=?  WHERE documento_docente=?");
 
             ps.setString(1, CampoNom.getText());
             ps.setString(2, CampoApellidos.getText());
@@ -501,7 +498,7 @@ public class frmgestionardocente extends javax.swing.JFrame {
             ps.setInt(3, CampoT);
             ps.setString(4, CampoCorreo.getText());
             ps.setString(5,CampoEstudios.getText());
-            ps.setInt(7, Integer.parseInt(CampoDocu.getText()));
+            ps.setInt(6, Integer.parseInt(CampoDocu.getText()));
 
             int res = ps.executeUpdate();
             if (res > 0) {

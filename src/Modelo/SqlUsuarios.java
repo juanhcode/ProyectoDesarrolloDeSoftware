@@ -5,18 +5,16 @@
  */
 package Modelo;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  *
- * @author Pablo
+ *
  */
 public class SqlUsuarios extends Conexion {
 
@@ -24,7 +22,7 @@ public class SqlUsuarios extends Conexion {
     String pass = "";
     //Registrar Usuarios
 
-    public boolean registrar(usuarios usr,String fecha) {
+    public boolean registrar(usuarios usr, String fecha) {
 
         Conexion conexion = new Conexion();
         ResultSet rs = null;
@@ -41,7 +39,7 @@ public class SqlUsuarios extends Conexion {
             pst.setInt(4, usr.getId_tipo());
             pst.setString(5, usr.getUsuario());
             pst.setString(6, usr.getCorreo());
-            pst.setTimestamp(7,Timestamp.valueOf(fecha));
+            pst.setTimestamp(7, Timestamp.valueOf(fecha));
             pst.execute();
             pst.close();
             return true;
@@ -79,39 +77,51 @@ public class SqlUsuarios extends Conexion {
         return 1;
 
     }
-    
-    public int existePadre(int Usuario) {
+
+    public int existeResponsable(int responsable) {
         Conexion conexion = new Conexion();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
+        String sql = "SELECT documento_res FROM responsables WHERE documento_res = '" + responsable + "'";
 
-        //cuenta el numero de registros que tiene la tabla cuando usuario
-        //sea igual al campo que agregamos
-        String sql = "select count(codigo) from usuario where codigo=?  and exists(select documento_res from responsables)";
         try {
-
             pst = conexion.conectar().prepareStatement(sql);
-            pst.setInt(1, Usuario);
             rs = pst.executeQuery();
-            System.out.println("Hola GG");
-            
             if (rs.next()) {
-                return rs.getInt(1);
+                System.out.println("Si existe un responsable");
+                return 1;
+            } else {
+                System.out.println("No existe un responsable");
             }
-            return 0;
-
         } catch (SQLException ex) {
             System.out.println(ex);
-
         }
-        return 1;
-
+        return 0;
     }
     
-    
-    
-    //Validar Correo Electronico
-    public boolean ValidarEmail(String correo) {
+   public int existeDocente(int docente) {
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        PreparedStatement pst = null; //ps= sentencia preparada;
+        String sql = "SELECT documento_docente FROM docente WHERE documento_docente = '" + docente + "'";
+
+        try {
+            pst = conexion.conectar().prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                System.out.println("Si existe un docente");
+                return 1;
+            } else {
+                System.out.println("No existe un docente");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return 0;
+    }
+
+//Validar Correo Electronico
+public boolean ValidarEmail(String correo) {
         //Patron para validar email---- indica que la cadena debe iniciar con esos caracteres--- puede llevar los siguientes
         // debe llevar un arroba - dominio - punto
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+´)*@"

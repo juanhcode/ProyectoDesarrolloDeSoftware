@@ -574,7 +574,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
             Conexion conn = new Conexion();
 
             String sql = "SELECT n.num_matricula,n.nombre,n.numregistrocivil,n.fecha_nacimiento,n.fecha_ingreso,"
-                    + "g.nombre,n.tpsangre,n.sexo,s.codigo_responsable FROM niños n inner join se_relaciona  s on n.num_matricula = s.num_matricula_niño inner join grado g on n.grado = g.codigo" // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
+                    + "g.nombre,n.tpsangre,n.sexo,s.codigo_responsable FROM niños n inner join se_relaciona  s on n.num_matricula = s.num_matricula_niño inner join grado g on n.grado = g.codigo"
                     + where;
 
             System.out.println(sql);

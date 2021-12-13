@@ -78,6 +78,9 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null}
             },
             new String [] {
@@ -98,14 +101,6 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(Tabla);
-        if (Tabla.getColumnModel().getColumnCount() > 0) {
-            Tabla.getColumnModel().getColumn(0).setResizable(false);
-            Tabla.getColumnModel().getColumn(1).setResizable(false);
-            Tabla.getColumnModel().getColumn(2).setResizable(false);
-            Tabla.getColumnModel().getColumn(3).setResizable(false);
-            Tabla.getColumnModel().getColumn(4).setResizable(false);
-            Tabla.getColumnModel().getColumn(6).setResizable(false);
-        }
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Gestión De Usuarios");
@@ -342,8 +337,8 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         PreparedStatement ps = null;
         
         try {
-            ps = conexion.conectar().prepareStatement("UPDATE usuario SET usuario_nickname,correo_electronico,"
-                    + "contraseña=?, nombre=? WHERE id_Usuario=?");
+            ps = conexion.conectar().prepareStatement("UPDATE usuario SET usuario_nickname=?,correo_electronico=?,"
+                    + "contraseña=?,nombre=? WHERE codigo=?");
 
             ps.setString(1, campoUsuario.getText());
             ps.setString(2, campoCorreo.getText());
@@ -400,7 +395,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                 campoUsuario.setText(rs.getString("usuario_nickname"));
                 campoCorreo.setText(rs.getString("correo_electronico"));       
                 Tipo.setEditable(false);
-                Tipo.setEnabled(false);                      
+                Tipo.setEnabled(false);
             }
         } catch (SQLException ex) {
             System.err.println(ex.toString());
