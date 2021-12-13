@@ -5,6 +5,10 @@
  */
 package Modelo;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Juan Manuel
@@ -18,6 +22,12 @@ public class NewMain {
         SqlUsuarios sqlU = new SqlUsuarios();
         //int cantidad = sqlU.existeUsuario("juan");
         //System.out.println("Cantidad de usuarios con el mismo nombre" + cantidad );
+        SqlRegistrarNiños niños = new SqlRegistrarNiños();
+        try {
+            niños.existeResponsable(454);
+        } catch (SQLException ex) {
+            Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     

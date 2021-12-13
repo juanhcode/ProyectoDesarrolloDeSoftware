@@ -8,7 +8,6 @@ public class docentes {
     private int telefono;
     private String correo;
     private String estudios;
-    private String grado;
 
     public docentes(int documento, String nombres, String apellidos, int telefono, String correo, String estudios) {
         this.documento = documento;
@@ -19,8 +18,7 @@ public class docentes {
         this.estudios = estudios;
     }
 
-    public docentes() {
-      
+    public docentes() { //To change body of generated methods, choose Tools | Templates.
     }
     
     
@@ -71,14 +69,6 @@ public class docentes {
 
     public void setEstudios(String estudios) {
         this.estudios = estudios;
-    }
-
-    public String getGrado() {
-        return grado;
-    }
-
-    public void setGrado(String grado) {
-        this.grado = grado;
     }
 
     
