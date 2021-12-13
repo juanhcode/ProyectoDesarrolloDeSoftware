@@ -51,7 +51,7 @@ public class GestionarGrados extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Tabla = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        grados = new javax.swing.JComboBox<String>();
+        grados = new javax.swing.JComboBox<>();
         campoG = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -84,7 +84,7 @@ public class GestionarGrados extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "Documento", "Nombre"
+                "Documento", "Nombre Docente"
             }
         ) {
             Class[] types = new Class [] {
@@ -211,13 +211,24 @@ public class GestionarGrados extends javax.swing.JFrame {
 
     private void ConsultarGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarGActionPerformed
         // TODO add your handling code here:
-        String consultaGrados = grados.getSelectedItem().toString();
+        String consultaDocente = Doc.getText();
+        int grado = 0;
         String where = "";
-        if (!"".equals((consultaGrados))) {
-            where = " WHERE s.nombre = '" + consultaGrados + "';";
-
-        }
-        try {
+        if(grados.getSelectedItem().toString().equals("Iniciación")){
+               grado = 1;
+            }else if(grados.getSelectedItem().toString().equals("Párvulos")){
+                grado = 2;
+            }else if(grados.getSelectedItem().toString().equals("Prejardín")){
+                grado = 3;
+            }else if(grados.getSelectedItem().toString().equals("Jardín")){
+               grado = 4;
+            }else if(grados.getSelectedItem().toString().equals("Transición")){
+               grado = 5;
+            }
+        if (!"".equals((consultaDocente))) {
+            where = " WHERE codigo = '" + grado + "' and codigo_docente = '" +consultaDocente +"';";
+            
+            try {
             DefaultTableModel modelo = new DefaultTableModel();
             Tabla.setModel(modelo);
 
@@ -226,8 +237,8 @@ public class GestionarGrados extends javax.swing.JFrame {
             Conexion conn = new Conexion();
             Connection con = conn.conectar();
 
-            String sql = "SELECT n.documento_docente, n.nombre_docente "
-                    + "FROM docente n inner join grado s on n.documento_docente = codigo_docente"
+            String sql = "SELECT g.codigo_docente, d.nombre_docente "
+                    + "FROM docente d inner join grado g on d.documento_docente = g.codigo_docente"
                     + where;
 
             System.out.println(sql);
@@ -256,6 +267,12 @@ public class GestionarGrados extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.err.println(ex.toString());
         }
+
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Debe ingresar el documento del docente");
+        }
+        
     }//GEN-LAST:event_ConsultarGActionPerformed
 
     private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
@@ -300,17 +317,27 @@ public class GestionarGrados extends javax.swing.JFrame {
     }//GEN-LAST:event_DocActionPerformed
 
     private void CambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambioActionPerformed
-        PreparedStatement ps = null;
+            PreparedStatement ps = null;
+            Conexion conexion = new Conexion();
         
         try {
             
-            Conexion Obconn = new Conexion();
-            Connection conn = Obconn.conectar();
             
-            ps = conn.prepareStatement("UPDATE grado SET codigo_docente=? where codigo_docente=?");
+            ps = conexion.conectar().prepareStatement("UPDATE grado SET codigo_docente=? where codigo=?");
             
-            ps.setInt(1, Integer.parseInt(Doc.getText()));
-            ps.setInt(2, Integer.parseInt(Doc.getText()));
+            int CampoDoc = Integer.parseInt(Doc.getText());
+            ps.setInt(1, (CampoDoc));
+            if(grados.getSelectedItem().toString().equals("Iniciación")){
+                ps.setInt(2, 1);
+            }else if(grados.getSelectedItem().toString().equals("Párvulos")){
+                ps.setInt(2, 2);
+            }else if(grados.getSelectedItem().toString().equals("Prejardín")){
+                ps.setInt(2, 3);
+            }else if(grados.getSelectedItem().toString().equals("Jardín")){
+                ps.setInt(2, 4);
+            }else if(grados.getSelectedItem().toString().equals("Transición")){
+                ps.setInt(2, 5);
+            }
             
 
             int res = ps.executeUpdate();
@@ -321,12 +348,13 @@ public class GestionarGrados extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Docente");
                 Limpiar();
             }
-            conn.close();
+            conexion.conectar().close();
             
             
             
         }catch (Exception e) {
             System.err.println(e);
+            JOptionPane.showMessageDialog(null, "Error Al Modificar Los Datos Del Docente");
         }
     
     
