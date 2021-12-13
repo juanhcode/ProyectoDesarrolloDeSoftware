@@ -51,7 +51,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         botonConsultar = new javax.swing.JButton();
         botonModificar = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        Eliminar = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         ConsultaU = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -62,7 +62,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         campoContraseña = new javax.swing.JTextField();
         campoNombre = new javax.swing.JTextField();
         campoCorreo = new javax.swing.JTextField();
-        Tipo = new javax.swing.JComboBox<>();
+        Tipo = new javax.swing.JComboBox<String>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         campoCodigo = new javax.swing.JTextField();
@@ -126,11 +126,11 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton3.setText("Eliminar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        Eliminar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        Eliminar.setText("Eliminar");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                EliminarActionPerformed(evt);
             }
         });
 
@@ -167,7 +167,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         });
 
         Tipo.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-        Tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3" }));
+        Tipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3" }));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
         jLabel6.setText("Tipo Usuario:");
@@ -233,7 +233,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(botonModificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3)))
+                        .addComponent(Eliminar)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
@@ -284,7 +284,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(botonConsultar)
                             .addComponent(botonModificar)
-                            .addComponent(jButton3)
+                            .addComponent(Eliminar)
                             .addComponent(jButton4))))
                 .addGap(11, 11, 11))
         );
@@ -296,7 +296,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         String consultau = ConsultaU.getText();
         String where = "";
         if (!"".equals((consultau))) {
-           where = "WHERE id_Usuario = '" + consultau + "'";
+           where = " WHERE codigo = " + consultau + "";
 
         }
         try { 
@@ -306,21 +306,22 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
             PreparedStatement ps = null;
             ResultSet rs = null;
             Conexion conn = new Conexion();
-            //Connection con = conn.getConexion();
+            Connection con = conn.conectar();
 
-            String sql = "SELECT id_Usuario, usuario, contraseña, nombre, correo, Tipo_Usuario_id_tipo  FROM usuarios " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
-                    +where;
+            String sql = "SELECT codigo, usuario_nickname, nombre, contraseña, "
+                    + "idtipousuario, correo_electronico  FROM usuario" // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes
+                    + where;
             System.out.println(sql);
-            //ps = con.prepareStatement(sql);
+            ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             ResultSetMetaData rsMD = rs.getMetaData();
             int cantidadColumnas = rsMD.getColumnCount();
             modelo.addColumn("Codigo(DOC)");
             modelo.addColumn("Usuario");
-            modelo.addColumn("Contraseña");
             modelo.addColumn("Nombre");
-            modelo.addColumn("Correo");
+            modelo.addColumn("Contraseña");
             modelo.addColumn("Tipo De Usuario");
+            modelo.addColumn("Correo");
             //Condicion para los anchos de la tableta xd
             int[] anchos = {120, 85, 85, 85, 150, 120};
             for (int i = 0; i < Tabla.getColumnCount(); i++) {
@@ -392,29 +393,25 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
 
         try {
             Conexion Obconn = new Conexion();
-            //Connection conn = Obconn.getConexion();
+            Connection conn = Obconn.conectar();
 
             int Fila = Tabla.getSelectedRow(); //nos trae la fila seleccionada
             String nombreU = Tabla.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
-            /*
-            ps = conn.prepareStatement("SELECT id_Usuario, usuario, contraseña, nombre, "
-                    + "correo, Tipo_Usuario_id_tipo FROM usuarios WHERE id_Usuario=?");
-            */
-            ps.setString(1, nombreU);
+            
+            ps = conn.prepareStatement("SELECT codigo, usuario_nickname, nombre, contraseña, "
+                    + "idtipousuario, correo_electronico  FROM usuario");
+            ps.setInt(1, Integer.parseInt(nombreU));
             rs = ps.executeQuery();
 
             while (rs.next()) {
       
-                campoCodigo.setText(rs.getString("id_Usuario"));
-                campoCodigo.setEditable(false);
-                campoCodigo.setEnabled(false);
-                campoUsuario.setText(rs.getString("usuario"));
-                campoContraseña.setText(rs.getString("contraseña"));
+                campoCodigo.setText(rs.getInt("codigo") + "");
+                campoUsuario.setText(rs.getString("usuario_nickname"));
                 campoNombre.setText(rs.getString("nombre"));
-                campoCorreo.setText(rs.getString("correo"));
-                Tipo.setSelectedItem(rs.getString("Tipo_Usuario_id_tipo"));
-                Tipo.setEditable(false);
-                Tipo.setEnabled(false);                  
+                campoContraseña.setText(rs.getString("contraseña"));
+                Tipo.setSelectedItem(rs.getString("idtipousuario"));
+                campoCorreo.setText(rs.getString("correo_electronico"));
+                                 
                 
                 
           
@@ -431,9 +428,29 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        PreparedStatement ps = null;
+        try {
+
+            Conexion Obconn = new Conexion();
+
+            int Fila = Tabla.getSelectedRow();
+            String id = Tabla.getValueAt(Fila, 0).toString();
+            int doc = Integer.parseInt(id);
+            
+            ps = Obconn.conectar().prepareStatement("DELETE FROM usuario WHERE codigo=?;");
+            ps.setInt(1, doc);
+            ps.execute();
+
+            // modelo.removeRow(Fila);
+            JOptionPane.showMessageDialog(null, "Docente Eliminado");
+            limpiar();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al Eliminar Docente");
+            System.out.println(ex.toString());
+        }
+    }//GEN-LAST:event_EliminarActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
 
@@ -502,6 +519,7 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ConsultaU;
+    private javax.swing.JButton Eliminar;
     private javax.swing.JTable Tabla;
     private javax.swing.JComboBox<String> Tipo;
     private javax.swing.JButton botonConsultar;
@@ -511,7 +529,6 @@ public class GestionDeUsuarios extends javax.swing.JFrame {
     private javax.swing.JTextField campoCorreo;
     private javax.swing.JTextField campoNombre;
     private javax.swing.JTextField campoUsuario;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

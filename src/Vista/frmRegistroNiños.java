@@ -558,7 +558,7 @@ public class frmRegistroNiños extends javax.swing.JFrame {
         String consultaNiño = consultaN.getText();
         String where = "";
         if (!"".equals((consultaNiño))) {
-            where = " WHERE num_matricula = '" + consultaNiño + "'";
+            where = " WHERE num_matricula = " + consultaNiño + "";
         }
         try {
             DefaultTableModel modelo = new DefaultTableModel();

@@ -167,10 +167,10 @@ public class ConsultarGradosDocente extends javax.swing.JFrame {
     }//GEN-LAST:event_DocumentoActionPerformed
 
     private void ConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultaActionPerformed
-        String consultaGrados = Grado.getSelectedItem().toString();
+        String consultaGrado = Documento.getText().toString();
         String where = "";
-        if (!"".equals((consultaGrados))) {
-            where = " WHERE s.nombre = '" + consultaGrados + "';";
+        if (!"".equals((consultaGrado))) {
+            where = " WHERE g.documento_docente = " + consultaGrado + "";
 
         }
         try {
@@ -182,8 +182,9 @@ public class ConsultarGradosDocente extends javax.swing.JFrame {
             Conexion conn = new Conexion();
             Connection con = conn.conectar();
 
-            String sql = "SELECT n.documento_docente, n.nombre_docente "
-                    + "FROM docente n inner join grado s on n.documento_docente = codigo_docente"
+            String sql = "SELECT n.num_matricula,n.nombre FROM niños n inner join grado s "
+                    + "on n.grado = s.codigo inner join "
+                    + "docente g on s.codigo_docente = g.documento_docente"
                     + where;
 
             System.out.println(sql);
