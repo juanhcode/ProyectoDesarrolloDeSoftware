@@ -293,7 +293,7 @@ public class frmregistrarpago extends javax.swing.JFrame {
     }//GEN-LAST:event_campoFECHAActionPerformed
 
     private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
-        BienvenidoRector pagosR = new BienvenidoRector();
+        BienvenidoDocente pagosR = new BienvenidoDocente();
         pagosR.setVisible(true);
         dispose();
 

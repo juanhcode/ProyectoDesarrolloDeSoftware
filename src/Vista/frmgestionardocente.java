@@ -47,14 +47,8 @@ public class frmgestionardocente extends javax.swing.JFrame {
          String[] titulos ={"ID", "Nombres", "Apellidos", "Telefono", "Correo", "Estudios"};
          String[] registros = new String[50];
          
-         String sql = "SELECT * FROM gestionar_docentes"; // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes 
-
-       
-        
-        model = new DefaultTableModel(null, titulos);
-        
-        
-       
+         String sql = "SELECT * FROM gestionar_docentes"; // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes   
+        model = new DefaultTableModel(null, titulos);  
         Connection con = getConexion();
 
         //Aqui se guardan los datos a la base de datos usuarios tabla gestionar_docentes.
@@ -214,6 +208,12 @@ public class frmgestionardocente extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(Tabla);
+
+        ConsultaC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConsultaCActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Estudios:");
@@ -377,8 +377,6 @@ public class frmgestionardocente extends javax.swing.JFrame {
                     mod.setTelefono(GuardarTelefono);
                     mod.setCorreo(CampoCorreo.getText());
                     mod.setEstudios(CampoEstudios.getText());
-                   
-
                     if (modSql.registrarDocente(mod)) {
                         JOptionPane.showMessageDialog(null, "Registro Guardado");
                         // Limpiar();
@@ -547,6 +545,10 @@ public class frmgestionardocente extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void ConsultaCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultaCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ConsultaCActionPerformed
 
     private void limpiar() {
         CampoDocu.setText("");

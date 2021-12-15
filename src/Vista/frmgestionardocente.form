@@ -368,6 +368,9 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="ConsultaC">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ConsultaCActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel8">
       <Properties>
