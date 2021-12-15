@@ -24,7 +24,7 @@ public class NewMain {
         //System.out.println("Cantidad de usuarios con el mismo nombre" + cantidad );
         SqlRegistrarNiños niños = new SqlRegistrarNiños();
         try {
-            niños.existeResponsable(454);
+            niños.existeResponsable(787);
         } catch (SQLException ex) {
             Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
         }

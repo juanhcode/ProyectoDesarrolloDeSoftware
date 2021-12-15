@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -63,6 +65,8 @@ public class InicioSesion extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtusuario = new javax.swing.JTextField();
@@ -70,6 +74,7 @@ public class InicioSesion extends javax.swing.JFrame {
         btningresar = new javax.swing.JButton();
         btnsalir = new javax.swing.JButton();
         bRegresar = new javax.swing.JButton();
+        txtlast_session = new javax.swing.JPasswordField();
 
         jTextField2.setText("jTextField2");
 
@@ -80,6 +85,10 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +134,12 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
+        txtlast_session.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtlast_sessionActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,12 +148,6 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btningresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
-                        .addComponent(bRegresar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnsalir, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
@@ -148,7 +157,15 @@ public class InicioSesion extends javax.swing.JFrame {
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(54, 54, 54)
                                 .addComponent(txtusuario)))
-                        .addGap(45, 45, 45))))
+                        .addGap(45, 45, 45))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtlast_session, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btningresar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 168, Short.MAX_VALUE)
+                        .addComponent(bRegresar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnsalir, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,7 +178,9 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtcontraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addGap(43, 43, 43)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtlast_session, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnsalir)
                     .addComponent(btningresar)
@@ -218,6 +237,13 @@ public class InicioSesion extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Bienvenido Al Sistema " + user);
                         dispose();
                         new BienvenidoRector().setVisible(true);
+                         TimerTask temporizador = new TimerTask(){
+                            @Override
+                            public void run() {
+                                
+                            }
+                             
+                         };
 
                     } else if (tipoUsuario == 2) {
                         JOptionPane.showMessageDialog(null, "Bienvenido Al Sistema Docente " + user);
@@ -249,6 +275,10 @@ public class InicioSesion extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnsalirActionPerformed
 
+    private void txtlast_sessionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtlast_sessionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtlast_sessionActionPerformed
+
     class FondoPanel extends JPanel {
 
         private Image imagen;
@@ -276,9 +306,12 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JPasswordField txtcontraseña;
+    private javax.swing.JPasswordField txtlast_session;
     private javax.swing.JTextField txtusuario;
     // End of variables declaration//GEN-END:variables
 }
