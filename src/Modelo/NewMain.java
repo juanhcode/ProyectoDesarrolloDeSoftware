@@ -23,11 +23,20 @@ public class NewMain {
         //int cantidad = sqlU.existeUsuario("juan");
         //System.out.println("Cantidad de usuarios con el mismo nombre" + cantidad );
         SqlRegistrarNiños niños = new SqlRegistrarNiños();
+        
         try {
-            niños.existeResponsable(787);
+            niños.existeResponsable(954545);
         } catch (SQLException ex) {
             Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        int numero1 = niños.existeNiño("10");
+        //System.out.println(numero1);
+        
+        
+        SqlGestionarDocentes sqlDo = new SqlGestionarDocentes();
+        int numero = sqlDo.existeDocente("75757");
+        //System.out.println(numero);
         
     }
     

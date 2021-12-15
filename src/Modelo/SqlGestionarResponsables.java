@@ -39,6 +39,34 @@ public class SqlGestionarResponsables extends Conexion {
         }
         return false;
     }
+    
+    public boolean updateResponsables(Responsables res,String id,int campoDoc) {
+
+        PreparedStatement ps = null; //ps= sentencia preparada;
+        Conexion conexion = new Conexion();
+        ResultSet rs = null;
+        //Aqui se guardan los datos a la base de datos usuarios tabla usuarios.
+        String sql = "begin;\n" +
+                "insert into responsables (documento_res, nombreres, direccion, numtelefono, parentesco) VALUES(?,?,?,?,?);\n" +
+                "update se_relaciona set codigo_responsable = '" + campoDoc + "' where codigo_responsable = '" + id + "';\n" +
+                "delete from responsables where documento_res = '" + id + "';" +
+                "commit;";
+        try {
+            ps = conexion.conectar().prepareStatement(sql);
+            ps.setInt(1, res.getDocumento());
+            ps.setString(2, res.getNombre());
+            ps.setString(3, res.getDirección());
+            ps.setInt(4, res.getTelefono());
+            ps.setString(5, res.getParentesco());
+            ps.execute();
+            ps.close();
+            return true;
+        } catch (Exception ex) {
+            System.out.println(ex);
+
+        }
+        return false;
+    }
 
     public int existeResponsable(String res) {
 

@@ -57,8 +57,8 @@ public class SqlRegistrarNiños extends Conexion {
                 pst.execute();
             }
             return true;
-        }else{
-            return  false;
+        } else {
+            return false;
         }
     }
 
@@ -93,7 +93,7 @@ public class SqlRegistrarNiños extends Conexion {
         Conexion conexion = new Conexion();
         ResultSet rs = null;
         PreparedStatement pst = null; //ps= sentencia preparada;
-        String sql3 = "SELECT documento_Res FROM responsables WHERE documento_res = '" + responsable + "'";
+        String sql3 = "SELECT documento_res FROM responsables WHERE documento_res = '" + responsable + "'";
         pst = conexion.conectar().prepareStatement(sql3);
         rs = pst.executeQuery();
         if (rs.next()) {

@@ -5,13 +5,20 @@
  */
 package Vista;
 
+import Modelo.Conexion;
 import Modelo.Responsables;
 import Modelo.SqlGestionarResponsables;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -56,6 +63,12 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         campoParentesco = new javax.swing.JComboBox<>();
         Registrar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        campoTablero = new javax.swing.JTable();
+        Consultar = new javax.swing.JButton();
+        Eliminar = new javax.swing.JButton();
+        Actualizar = new javax.swing.JButton();
+        campoParaConsultar = new javax.swing.JTextField();
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -82,7 +95,7 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
 
         jLabel8.setText("Parentesco:");
 
-        campoParentesco.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Padre", "Madre", "Abuelo", "Abuela", "Otro Familiar", "Conocido" }));
+        campoParentesco.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Padre", "Madre", "Abuelo", "Abuela", "Otro Familiar","Tio","Tia","Conocido" }));
 
         Registrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         Registrar.setText("Registrar");
@@ -97,6 +110,48 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        campoTablero.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Documento", "Nombre", "Direccion", "Telefono", "Parentesco"
+            }
+        ));
+        campoTablero.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                campoTableroMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(campoTablero);
+
+        Consultar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Consultar.setText("Consultar");
+        Consultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ConsultarActionPerformed(evt);
+            }
+        });
+
+        Eliminar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Eliminar.setText("Eliminar");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
+
+        Actualizar.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        Actualizar.setText("Actualizar");
+        Actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActualizarActionPerformed(evt);
             }
         });
 
@@ -120,65 +175,92 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(Registrar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(81, 81, 81))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel5))
-                        .addGap(52, 52, 52)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(16, 16, 16)
+                                        .addComponent(Registrar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Consultar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(Eliminar))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel8)
+                                            .addComponent(jLabel5))
+                                        .addGap(52, 52, 52)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(campoTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
+                                                .addComponent(campoDocumento)
+                                                .addComponent(campoNombres))
+                                            .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(campoParaConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(110, 110, 110)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(campoTelefono, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE)
-                                .addComponent(campoDocumento)
-                                .addComponent(campoNombres))
-                            .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(Actualizar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton3))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(44, 44, 44))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(campoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(campoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(40, 40, 40)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Registrar)
-                    .addComponent(jButton3)))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addGap(23, 23, 23))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(campoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(campoNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(campoDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(campoTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(campoParentesco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                        .addComponent(campoParaConsultar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Registrar)
+                            .addComponent(Consultar)
+                            .addComponent(Eliminar)
+                            .addComponent(Actualizar))
+                        .addGap(14, 14, 14))))
         );
 
         pack();
@@ -199,7 +281,6 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
                 || campoParentesco.getSelectedItem().toString().equals("")) {
             JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
         } else {
-
             if (modSql.existeResponsable(campoDocumento.getText()) == 0) //usuario no existe
             {
 
@@ -239,6 +320,145 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
         inicio.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarActionPerformed
+        // TODO add your handling code here:
+        String consultaC = campoParaConsultar.getText();
+        String where = "";
+        if (!"".equals((consultaC))) {
+            where = "WHERE documento_res = '" + consultaC + "'";
+        }
+        try {
+            DefaultTableModel modelo = new DefaultTableModel();
+            campoTablero.setModel(modelo);
+
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Conexion conn = new Conexion();
+
+            String sql = "SELECT documento_res,nombreres,direccion,numtelefono,parentesco  FROM responsables " // lo que aprendimos en bd uwu seleccionar todos los datos de la tabla gestion docentes 
+                    + where;
+            System.out.println(sql);
+            ps = conn.conectar().prepareStatement(sql);
+            rs = ps.executeQuery();
+            ResultSetMetaData rsMD = rs.getMetaData();
+            int cantidadColumnas = rsMD.getColumnCount();
+            modelo.addColumn("Documento");
+            modelo.addColumn("Nombre");
+            modelo.addColumn("Direccion");
+            modelo.addColumn("Telefono");
+            modelo.addColumn("Parenteso");
+
+            //Condicion para los anchos de la tableta xd 
+            int[] anchos = {20, 50, 50, 50, 150, 100};
+            for (int i = 0; i < campoTablero.getColumnCount(); i++) {
+                campoTablero.getColumnModel().getColumn(i).setPreferredWidth(anchos[i]);
+            }
+
+            while (rs.next()) {
+                Object[] filas = new Object[cantidadColumnas];
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(filas);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex.toString());
+        }
+    }//GEN-LAST:event_ConsultarActionPerformed
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+
+        PreparedStatement ps = null;
+        try {
+
+            Conexion Obconn = new Conexion();
+
+            int Fila = campoTablero.getSelectedRow();
+            String id = campoTablero.getValueAt(Fila, 0).toString();
+            int doc = Integer.parseInt(id);
+
+            ps = Obconn.conectar().prepareStatement("DELETE FROM responsables WHERE documento_res=?;");
+            ps.setInt(1, doc);
+            ps.execute();
+
+            // modelo.removeRow(Fila);
+            JOptionPane.showMessageDialog(null, "Docente Eliminado");
+            Limpiar();
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al Eliminar Docente");
+            System.out.println(ex.toString());
+        }
+
+
+    }//GEN-LAST:event_EliminarActionPerformed
+
+    private void campoTableroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_campoTableroMouseClicked
+        // TODO add your handling code here:
+        //Evento al hacer click en la Tabla
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            Conexion Obconn = new Conexion();
+
+            int Fila = campoTablero.getSelectedRow(); //nos trae la fila seleccionada
+            String nombreU = campoTablero.getValueAt(Fila, 0).toString(); //nos trae el valor que esta en la columna 0 de la fila seleccioanda
+
+            ps = Obconn.conectar().prepareStatement("SELECT documento_res, nombreres,direccion,numtelefono, "
+                    + "parentesco  FROM responsables WHERE documento_res=?");
+            ps.setInt(1, Integer.parseInt(nombreU));
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                campoDocumento.setText(rs.getInt("documento_res") + "");
+                campoNombres.setText(rs.getString("nombreres"));
+                campoDireccion.setText(rs.getString("direccion"));
+                campoTelefono.setText(rs.getString("numtelefono"));
+                campoParentesco.setSelectedItem(rs.getString("parentesco"));
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.toString());
+        }
+    }//GEN-LAST:event_campoTableroMouseClicked
+
+    private void ActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarActionPerformed
+        PreparedStatement ps = null;
+        int Fila = campoTablero.getSelectedRow();
+        String id = campoTablero.getValueAt(Fila, 0).toString();
+        
+        SqlGestionarResponsables modSql = new SqlGestionarResponsables();
+        Responsables mod = new Responsables();
+
+        //Valida que ningun campo esté vacio
+        if (campoDocumento.getText().equals("") || campoNombres.getText().equals("")
+                || campoDireccion.getText().equals("") || campoTelefono.getText().equals("")
+                || campoParentesco.getSelectedItem().toString().equals("")) {
+            JOptionPane.showMessageDialog(null, "Hay Campos Vacios, Debe Llenar Todos Los Campos");
+        } else {
+            if (modSql.existeResponsable(campoDocumento.getText()) == 0) //usuario no existe
+            {              
+                int ConvertirID = Integer.parseInt(campoDocumento.getText());
+                mod.setDocumento(ConvertirID);
+                mod.setNombre(campoNombres.getText());
+                mod.setDirección(campoDireccion.getText());
+                int ConvertirTEL = Integer.parseInt(campoTelefono.getText());
+                mod.setTelefono(ConvertirTEL);
+                mod.setParentesco(campoParentesco.getSelectedItem().toString());
+
+                if (modSql.updateResponsables(mod, id,Integer.parseInt(campoDocumento.getText()))) {
+                    JOptionPane.showMessageDialog(null, "Registro Actualizado");
+                    Limpiar();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error Al Guardar Registro");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "El Usuario Ya Existe");
+            }
+
+        }
+    }//GEN-LAST:event_ActualizarActionPerformed
     private void Limpiar() {
         campoDocumento.setText("");
         campoNombres.setText("");
@@ -299,11 +519,16 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Actualizar;
+    private javax.swing.JButton Consultar;
+    private javax.swing.JButton Eliminar;
     private javax.swing.JButton Registrar;
     private javax.swing.JTextField campoDireccion;
     private javax.swing.JTextField campoDocumento;
     private javax.swing.JTextField campoNombres;
+    private javax.swing.JTextField campoParaConsultar;
     private javax.swing.JComboBox<String> campoParentesco;
+    private javax.swing.JTable campoTablero;
     private javax.swing.JTextField campoTelefono;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -316,5 +541,6 @@ public class frmRegistroDatosPadre extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
